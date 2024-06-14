@@ -1,0 +1,12 @@
+[submodule "lib/classic"]
+	path = lib/classic
+	url = https://github.com/Sheepolution/classic.git
+[submodule "lib/input"]
+	path = lib/input
+	url = https://github.com/xiejiangzhi/input.git
+[submodule "lib/hump"]
+	path = lib/hump
+	url = https://github.com/vrld/hump.git
+[submodule "lib/Moses"]
+	path = lib/moses
+	url = https://github.com/Yonaba/Moses.git
