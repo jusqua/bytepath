@@ -1,5 +1,19 @@
-function love.load() end
+local Engine = require('src.Engine')
 
-function love.update(dt) end
+local engine
 
-function love.draw() end
+function love.load()
+  engine = Engine()
+end
+
+function love.update(dt)
+  engine:update(dt)
+
+  if love.keyboard.isDown('escape') then
+    love.event.quit()
+  end
+end
+
+function love.draw()
+  engine:draw()
+end
