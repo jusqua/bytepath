@@ -1,4 +1,5 @@
 local GameObject = require('src.GameObject')
+local M = require('lib.moses.moses')
 
 local Area = GameObject:extend()
 
@@ -28,6 +29,14 @@ end
 
 function Area:insert(gob)
   self.game_objects[gob.id] = gob
+end
+
+function Area:get(filter)
+  if not filter then
+    return self.game_objects
+  end
+
+  return M.select(self.game_objects, filter)
 end
 
 return Area
