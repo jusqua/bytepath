@@ -10,3 +10,7 @@
 [submodule "lib/Moses"]
 	path = lib/moses
 	url = https://github.com/Yonaba/Moses.git
+[submodule "lib/push"]
+	path = lib/push
+	url = https://github.com/Ulydev/push.git
+	branch = dev
