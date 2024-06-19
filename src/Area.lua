@@ -32,12 +32,34 @@ function Area:insert(gob)
   table.insert(self.game_objects, gob)
 end
 
-function Area:get(filter)
-  if not filter then
+function Area:get(arg)
+  if not arg then
     return self.game_objects
+  elseif type(arg) == 'table' then
+    return M.select(self.game_objects, function(e)
+      for _, class in ipairs(arg) do
+        if e:is(class) then
+          return true
+        end
+      end
+      return false
+    end)
+  elseif type(arg) == 'function' then
+    return M.select(self.game_objects, arg)
   end
+end
 
-  return M.select(self.game_objects, filter)
+function Area:query(x, y, radius, classes)
+  return M.select(self:get(classes), function(e)
+    local d = math.sqrt(math.pow(x - e.x, 2) + math.pow(y - e.y, 2))
+    return d <= radius
+  end)
+end
+
+function Area:closest(x, y, radius, classes)
+  return M.reduce(self:query(x, y, radius, classes), function(a, b)
+    return a > b and b or a
+  end)
 end
 
 return Area
