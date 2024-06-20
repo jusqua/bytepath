@@ -1,4 +1,7 @@
+local push = require('lib.push.push')
 local GameObject = require('src.GameObject')
+local Area = require('src.Area')
+local Player = require('src.Player')
 
 local Scene = GameObject:extend()
 
@@ -7,6 +10,12 @@ function Scene:new()
 
   self.areas = {}
   self.active_area = nil
+
+  local wwidth, wheight, _ = love.window.getMode()
+  self.player = Player(push.toGame(wwidth / 2, wheight / 2))
+
+  self:insert(Area())
+  self.active_area:insert(self.player)
 end
 
 function Scene:update(dt)
@@ -14,6 +23,10 @@ function Scene:update(dt)
 
   if self.active_area then
     self.active_area:update(dt)
+  end
+
+  if not self.player.alive then
+    self.player = nil
   end
 end
 

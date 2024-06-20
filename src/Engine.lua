@@ -1,4 +1,5 @@
 local GameObject = require('src.GameObject')
+local Scene = require('src.Scene')
 
 local Engine = GameObject:extend()
 
@@ -7,6 +8,8 @@ function Engine:new()
 
   self.scenes = {}
   self.active_scene = nil
+
+  self:insert(Scene())
 end
 
 function Engine:update(dt)

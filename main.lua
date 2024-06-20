@@ -8,8 +8,6 @@ local VIRTUAL_WIDTH, WIDTH, VIRTUAL_HEIGHT, HEIGHT, WINDOW_SCALE
 local engine, camera
 
 function love.load()
-  engine = Engine()
-
   VIRTUAL_WIDTH, VIRTUAL_HEIGHT, _ = love.window.getMode()
   WINDOW_SCALE = 3
   WIDTH, HEIGHT = VIRTUAL_WIDTH * WINDOW_SCALE, VIRTUAL_HEIGHT * WINDOW_SCALE
@@ -19,6 +17,7 @@ function love.load()
   love.graphics.setLineStyle('rough')
   push.setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, { upscale = 'pixel-perfect', canvas = true })
 
+  engine = Engine()
   camera = Camera()
 
   Input.bind_callbacks()
@@ -45,7 +44,6 @@ function love.draw()
   camera:attach()
 
   engine:draw()
-  love.graphics.circle('line', VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, 64)
 
   camera:detach()
   push:finish()
