@@ -11,10 +11,13 @@ function Scene:new()
   self.areas = {}
   self.active_area = nil
 
-  local wwidth, wheight, _ = love.window.getMode()
-  self.player = Player(push.toGame(wwidth / 2, wheight / 2))
-
   self:insert(Area())
+  self.active_area:generateWorld()
+
+  local wwidth, wheight, _ = love.window.getMode()
+  local vx, vy = push.toGame(wwidth / 2, wheight / 2)
+  self.player = Player(vx, vy, self.active_area.world)
+
   self.active_area:insert(self.player)
 end
 
