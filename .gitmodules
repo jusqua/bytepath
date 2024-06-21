@@ -14,3 +14,6 @@
 	path = lib/push
 	url = https://github.com/Ulydev/push.git
 	branch = dev
+[submodule "lib/windfield"]
+	path = lib/windfield
+	url = https://github.com/idbrii/love-windfield.git
