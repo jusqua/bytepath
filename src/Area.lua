@@ -1,16 +1,22 @@
-local GameObject = require('src.GameObject')
 local M = require('lib.moses.moses')
+local windfield = require('lib.windfield.windfield')
+local GameObject = require('src.GameObject')
 
 local Area = GameObject:extend()
 
 function Area:new()
   Area.super.new(self)
 
+  self.world = nil
   self.game_objects = {}
 end
 
 function Area:update(dt)
   Area.super.update(self, dt)
+
+  if self.world then
+    self.world:update(dt)
+  end
 
   for i = #self.game_objects, 1, -1 do
     local gob = self.game_objects[i]
@@ -23,6 +29,10 @@ function Area:update(dt)
 end
 
 function Area:draw()
+  if self.world then
+    self.world:draw()
+  end
+
   for _, gob in ipairs(self.game_objects) do
     gob:draw()
   end
@@ -60,6 +70,10 @@ function Area:closest(x, y, radius, classes)
   return M.reduce(self:query(x, y, radius, classes), function(a, b)
     return a > b and b or a
   end)
+end
+
+function Area:generateWorld()
+  self.world = windfield.newWorld(0, 0)
 end
 
 return Area
