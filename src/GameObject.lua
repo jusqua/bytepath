@@ -11,11 +11,15 @@ function GameObject:new(x, y)
   self.alive = true
   self.id = M.uid()
   self.timer = Timer()
+  self.collider = nil
 end
 
 function GameObject:update(dt)
   if self.timer then
     self.timer:update(dt)
+  end
+  if self.collider then
+    self.x, self.y = self.collider:getPosition()
   end
 end
 
