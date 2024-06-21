@@ -23,6 +23,7 @@ function Area:update(dt)
     gob:update(dt)
 
     if not gob.alive then
+      gob:destroy()
       table.remove(self.game_objects, i)
     end
   end
@@ -35,6 +36,19 @@ function Area:draw()
 
   for _, gob in ipairs(self.game_objects) do
     gob:draw()
+  end
+end
+
+function Area:destroy()
+  for i = #self.game_objects, 1, -1 do
+    self.game_objects[i]:destroy()
+    table.remove(self.game_objects, i)
+  end
+  self.game_objects = {}
+
+  if self.world then
+    self.world:destroy()
+    self.world = nil
   end
 end
 

@@ -8,25 +8,20 @@ local Scene = GameObject:extend()
 function Scene:new()
   Scene.super.new(self)
 
-  self.areas = {}
-  self.active_area = nil
-
-  self:insert(Area())
-  self.active_area:generateWorld()
+  self.area = Area()
+  self.area:generateWorld()
 
   local wwidth, wheight, _ = love.window.getMode()
   local vx, vy = push.toGame(wwidth / 2, wheight / 2)
-  self.player = Player(vx, vy, self.active_area.world)
+  self.player = Player(vx, vy, self.area.world)
 
-  self.active_area:insert(self.player)
+  self.area:insert(self.player)
 end
 
 function Scene:update(dt)
   Scene.super.update(self, dt)
 
-  if self.active_area then
-    self.active_area:update(dt)
-  end
+  self.area:update(dt)
 
   if not self.player.alive then
     self.player = nil
@@ -34,20 +29,12 @@ function Scene:update(dt)
 end
 
 function Scene:draw()
-  if self.active_area then
-    self.active_area:draw()
-  end
+  self.area:draw()
 end
 
-function Scene:attach(area)
-  if self.areas[area.id] then
-    self.active_area = area
-  end
-end
-
-function Scene:insert(area)
-  self.areas[area.id] = area
-  self:attach(area)
+function Scene:destroy()
+  self.area:destroy()
+  self.area = nil
 end
 
 return Scene
