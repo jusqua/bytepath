@@ -31,7 +31,7 @@ end
 
 function Area:draw()
   if self.world then
-    self.world:draw()
+    self.world:draw(0)
   end
 
   for _, gob in ipairs(self.game_objects) do
