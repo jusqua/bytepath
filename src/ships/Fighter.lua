@@ -50,19 +50,6 @@ function Fighter:new(player)
   }
 end
 
-function Fighter:draw()
-  for _, polygon in ipairs(self.polygons) do
-    local points = Moses.map(polygon, function(v, k)
-      if k % 2 == 1 then
-        return self.player.x + v + love.math.random(-1, 1)
-      else
-        return self.player.y + v + love.math.random(-1, 1)
-      end
-    end)
-    love.graphics.polygon('line', points)
-  end
-end
-
 function Fighter:trails()
   local trails = {}
 

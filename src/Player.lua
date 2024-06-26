@@ -80,7 +80,16 @@ function Player:draw()
   love.graphics.rotate(self.angle)
   love.graphics.translate(-self.x, -self.y)
 
-  self.ship:draw()
+  for _, polygon in ipairs(self.ship.polygons) do
+    local points = Moses.map(polygon, function(v, k)
+      if k % 2 == 1 then
+        return self.x + v + love.math.random(-1, 1)
+      else
+        return self.y + v + love.math.random(-1, 1)
+      end
+    end)
+    love.graphics.polygon('line', points)
+  end
 
   love.graphics.pop()
 end
