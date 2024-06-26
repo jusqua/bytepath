@@ -7,7 +7,7 @@ local ExplodeParticle = require('src.ExplodeParticle')
 local utils = require('src.utils')
 local TickEffect = require('src.TickEffect')
 local constants = require('src.constants')
-local Fighter = require('src.ships.Fighter')
+local ships = require('src.ships')
 
 local Player = GameObject:extend()
 
@@ -17,7 +17,7 @@ function Player:new(x, y, engine, area)
   self.engine = engine
   self.area = area
 
-  self:attach(Fighter(self))
+  self:attach(ships[1](self))
 
   self.angle = -math.pi / 2
   self.angularVelocity = 1.66 * math.pi
