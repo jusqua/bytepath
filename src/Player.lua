@@ -7,19 +7,17 @@ local ExplodeParticle = require('src.ExplodeParticle')
 local utils = require('src.utils')
 local TickEffect = require('src.TickEffect')
 local constants = require('src.constants')
-local TrailParticle = require('src.TrailParticle')
+local Fighter = require('src.ships.Fighter')
 
 local Player = GameObject:extend()
 
 function Player:new(x, y, engine, area)
   Player.super.new(self, x, y)
 
-  local radius = 12
-  self.width = radius
-  self.height = radius
   self.engine = engine
   self.area = area
-  self.collider = area.world:newCircleCollider(self.x, self.y, self.width)
+
+  self:attach(Fighter(self))
 
   self.angle = -math.pi / 2
   self.angularVelocity = 1.66 * math.pi
@@ -30,7 +28,7 @@ function Player:new(x, y, engine, area)
   self.trail_color = constants.skill_point_color
 
   self.timer:every(0.24, function()
-    self:shoot(3, 8, math.pi / 6)
+    self:shoot()
   end)
 
   self.timer:every(5, function()
@@ -76,16 +74,29 @@ function Player:update(dt)
 end
 
 function Player:draw()
-  love.graphics.circle('line', self.x, self.y, self.width)
+  love.graphics.push()
+
+  love.graphics.translate(self.x, self.y)
+  love.graphics.rotate(self.angle)
+  love.graphics.translate(-self.x, -self.y)
+
+  self.ship:draw()
+
+  love.graphics.pop()
 end
 
 function Player:shoot(amount, offset, theta, attributes)
   self.area:insert(ShootEffect(self.x, self.y, self))
 
+  amount = amount or 1
+  offset = offset or 0
+  theta = theta or 0
+  attributes = attributes or {}
+
   local angle = self.angle + theta * (amount - 1) / 2
   local delta = offset * (amount - 1) / 2
   for i = 1, amount do
-    local attr = Moses.clone(attributes or {})
+    local attr = Moses.clone(attributes)
     attr.area = self.area
     attr.angle = angle - (i - 1) * theta
 
@@ -113,15 +124,23 @@ function Player:tick()
 end
 
 function Player:boost()
-  self.area:insert(
-    TrailParticle(
-      self.x - self.width * math.cos(self.angle),
-      self.y - self.width * math.sin(self.angle),
-      love.math.random(2, 4),
-      love.math.random(0.15, 0.25),
-      self.trail_color
-    )
-  )
+  local trails = self.ship:trails()
+
+  for _, trail in ipairs(trails) do
+    self.area:insert(trail)
+  end
+end
+
+function Player:attach(ship)
+  self.ship = ship
+  self.width = self.ship.width
+  self.height = self.ship.height
+
+  if self.collider then
+    self.collider:destroy()
+  end
+  self.collider = self.area.world:newCircleCollider(self.x, self.y, self.ship.width)
+  self.collider:setObject(self)
 end
 
 return Player
