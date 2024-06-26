@@ -1,6 +1,7 @@
 local push = require('lib.push.push')
 local Input = require('lib.input.input')
 local Engine = require('src.Engine')
+local constants = require('src.constants')
 
 local engine
 
@@ -12,6 +13,7 @@ function love.load()
   love.window.setMode(windowWidth, windowHeight)
   love.graphics.setDefaultFilter('nearest', 'nearest')
   love.graphics.setLineStyle('rough')
+  love.graphics.setColor(constants.default_color)
 
   push.setupScreen(virtualWidth, virtualHeight, {
     upscale = 'pixel-perfect',

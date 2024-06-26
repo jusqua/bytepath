@@ -32,9 +32,9 @@ function Engine:draw()
     self.flash_frames = self.flash_frames - 1
     love.graphics.setColor(constants.background_color)
     love.graphics.rectangle('fill', 0, 0, utils.getVirtualWindowDimensions())
-    love.graphics.setColor(constants.default_color)
   end
 
+  love.graphics.setColor(constants.default_color)
   self.camera:attach()
   if self.scene then
     self.scene:draw()

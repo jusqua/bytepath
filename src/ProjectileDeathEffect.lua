@@ -1,4 +1,5 @@
 local GameObject = require('src.GameObject')
+local constants = require('src.constants')
 
 local ProjectileDeathEffect = GameObject:extend()
 
@@ -19,13 +20,11 @@ function ProjectileDeathEffect:new(x, y, size)
 end
 
 function ProjectileDeathEffect:draw()
-  if self.first then
-    love.graphics.setColor({ 222, 222, 222 })
-  elseif self.second then
-    love.graphics.setColor({ 241, 103, 69 })
+  if self.second then
+    love.graphics.setColor(constants.hp_color)
   end
-
   love.graphics.rectangle('fill', self.x - self.size / 2, self.y - self.size / 2, self.size, self.size)
+  love.graphics.setColor(constants.default_color)
 end
 
 return ProjectileDeathEffect
