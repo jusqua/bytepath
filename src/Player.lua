@@ -6,6 +6,8 @@ local Projectile = require('src.Projectile')
 local ExplodeParticle = require('src.ExplodeParticle')
 local utils = require('src.utils')
 local TickEffect = require('src.TickEffect')
+local constants = require('src.constants')
+local TrailParticle = require('src.TrailParticle')
 
 local Player = GameObject:extend()
 
@@ -22,8 +24,10 @@ function Player:new(x, y, engine, area)
   self.angle = -math.pi / 2
   self.angularVelocity = 1.66 * math.pi
   self.linearVelocity = 0
-  self.maxLinearVelocity = 100
+  self.baseMaxLinearVelocity = 100
+  self.maxLinearVelocity = self.baseMaxLinearVelocity
   self.acceleration = 100
+  self.trail_color = constants.skill_point_color
 
   self.timer:every(0.24, function()
     self:shoot(3, 8, math.pi / 6)
@@ -31,6 +35,10 @@ function Player:new(x, y, engine, area)
 
   self.timer:every(5, function()
     self:tick()
+  end)
+
+  self.timer:every(0.01, function()
+    self:boost()
   end)
 end
 
@@ -43,8 +51,16 @@ function Player:update(dt)
   if select(1, Input.down('right')) then
     self.angle = self.angle + self.angularVelocity * dt
   end
-  if select(1, Input.down('d')) then
-    self:die()
+
+  self.maxLinearVelocity = self.baseMaxLinearVelocity
+  self.trail_color = constants.skill_point_color
+  if select(1, Input.down('up')) then
+    self.maxLinearVelocity = self.baseMaxLinearVelocity * 1.5
+    self.trail_color = constants.boost_color
+  end
+  if select(1, Input.down('down')) then
+    self.maxLinearVelocity = self.baseMaxLinearVelocity * 0.5
+    self.trail_color = constants.boost_color
   end
 
   self.linearVelocity = math.min(self.linearVelocity + self.acceleration * dt, self.maxLinearVelocity)
@@ -94,6 +110,18 @@ end
 
 function Player:tick()
   self.area:insert(TickEffect(self.x, self.y, self))
+end
+
+function Player:boost()
+  self.area:insert(
+    TrailParticle(
+      self.x - self.width * math.cos(self.angle),
+      self.y - self.width * math.sin(self.angle),
+      love.math.random(2, 4),
+      love.math.random(0.15, 0.25),
+      self.trail_color
+    )
+  )
 end
 
 return Player
