@@ -35,4 +35,8 @@ end
 
 function GameObject:draw() end
 
+function GameObject:die()
+  self.alive = false
+end
+
 return GameObject

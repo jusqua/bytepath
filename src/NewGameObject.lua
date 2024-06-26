@@ -16,4 +16,8 @@ function NewGameObject:destroy()
   NewGameObject.super.destroy(self)
 end
 
+function NewGameObject:die()
+  NewGameObject.super.die(self)
+end
+
 return NewGameObject
