@@ -1,5 +1,4 @@
 local Object = require('lib.classic.classic')
-local Moses = require('lib.moses.moses')
 local TrailParticle = require('src.TrailParticle')
 
 local Fighter = Object:extend()
