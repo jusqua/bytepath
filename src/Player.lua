@@ -1,4 +1,5 @@
 local Input = require('lib.input.input')
+local Moses = require('lib.moses.moses')
 local GameObject = require('src.GameObject')
 local ShootEffect = require('src.ShootEffect')
 local Projectile = require('src.Projectile')
@@ -21,7 +22,7 @@ function Player:new(x, y, area)
   self.acceleration = 100
 
   self.timer:every(0.24, function()
-    self:shoot({ radius = 8, linearVelocity = 150 })
+    self:shoot(3, 8, math.pi / 6)
   end)
 end
 
@@ -46,9 +47,23 @@ function Player:draw()
   love.graphics.circle('line', self.x, self.y, self.width)
 end
 
-function Player:shoot(attributes)
+function Player:shoot(amount, offset, theta, attributes)
   self.area:insert(ShootEffect(self.x, self.y, self))
-  self.area:insert(Projectile(self.x, self.y, self, attributes))
+
+  local angle = self.angle + theta * (amount - 1) / 2
+  local delta = offset * (amount - 1) / 2
+  for i = 1, amount do
+    local attr = Moses.clone(attributes or {})
+    attr.area = self.area
+    attr.angle = angle - (i - 1) * theta
+
+    local d = self.height * 1.5
+    local doff = delta * (i - 1 - (amount - 1) / 2)
+    local x = self.x + d * math.cos(self.angle) + doff * math.cos(self.angle - math.pi / 2)
+    local y = self.y + d * math.sin(self.angle) + doff * math.sin(self.angle - math.pi / 2)
+
+    self.area:insert(Projectile(x, y, attr))
+  end
 end
 
 return Player
