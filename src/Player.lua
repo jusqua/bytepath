@@ -5,6 +5,7 @@ local ShootEffect = require('src.ShootEffect')
 local Projectile = require('src.Projectile')
 local ExplodeParticle = require('src.ExplodeParticle')
 local utils = require('src.utils')
+local TickEffect = require('src.TickEffect')
 
 local Player = GameObject:extend()
 
@@ -26,6 +27,10 @@ function Player:new(x, y, engine, area)
 
   self.timer:every(0.24, function()
     self:shoot(3, 8, math.pi / 6)
+  end)
+
+  self.timer:every(5, function()
+    self:tick()
   end)
 end
 
@@ -85,6 +90,10 @@ function Player:die()
   for _ = 1, love.math.random(8, 12) do
     self.area:insert(ExplodeParticle(self.x, self.y))
   end
+end
+
+function Player:tick()
+  self.area:insert(TickEffect(self.x, self.y, self))
 end
 
 return Player
