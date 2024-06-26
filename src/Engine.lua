@@ -2,6 +2,7 @@ local Camera = require('lib.hump.camera')
 local GameObject = require('src.GameObject')
 local Scene = require('src.Scene')
 local utils = require('src.utils')
+local constants = require('src.constants')
 
 local Engine = GameObject:extend()
 
@@ -9,6 +10,7 @@ function Engine:new()
   Engine.super.new(self)
 
   self.slow_factor = 1
+  self.flash_frames = 0
 
   self.scene = Scene(self)
   self.camera = Camera()
@@ -26,6 +28,13 @@ function Engine:update(dt)
 end
 
 function Engine:draw()
+  if self.flash_frames > 0 then
+    self.flash_frames = self.flash_frames - 1
+    love.graphics.setColor(constants.background_color)
+    love.graphics.rectangle('fill', 0, 0, utils.getVirtualWindowDimensions())
+    love.graphics.setColor(constants.default_color)
+  end
+
   self.camera:attach()
   if self.scene then
     self.scene:draw()
@@ -40,6 +49,10 @@ end
 function Engine:slowdown(factor, duration)
   self.slow_factor = factor
   self.timer:tween(duration, self, { slow_factor = 1 }, 'in-out-cubic')
+end
+
+function Engine:flash(frames)
+  self.flash_frames = frames
 end
 
 function Engine:attach(scene)

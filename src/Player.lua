@@ -81,6 +81,7 @@ function Player:die()
   Player.super.die(self)
   self.engine:shake(6, 60, 0.4)
   self.engine:slowdown(0.15, 1)
+  self.engine:flash(4)
   for _ = 1, love.math.random(8, 12) do
     self.area:insert(ExplodeParticle(self.x, self.y))
   end
