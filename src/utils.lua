@@ -19,8 +19,9 @@ local function shakeCamera(camera, timer, amplitude, frequency, duration)
   do
     local t, d = 0, 0
     local pnoise = love.math.random(-1, 1)
+    local start_time = love.timer.getTime() * 1000
     timer:during(duration, function(dt)
-      t = t + dt
+      t = (love.timer.getTime() * 1000 - start_time) * dt
       pnoise, d = getShakeOffsets(amplitude, frequency, duration, pnoise, t)
       camera:move(d, 0)
     end)
@@ -30,8 +31,9 @@ local function shakeCamera(camera, timer, amplitude, frequency, duration)
   do
     local t, d = 0, 0
     local pnoise = love.math.random(-1, 1)
+    local start_time = love.timer.getTime() * 1000
     timer:during(duration, function(dt)
-      t = t + dt
+      t = (love.timer.getTime() * 1000 - start_time) * dt
       pnoise, d = getShakeOffsets(amplitude, frequency, duration, pnoise, t)
       camera:move(0, d)
     end)
