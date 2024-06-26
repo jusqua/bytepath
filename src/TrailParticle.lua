@@ -3,13 +3,13 @@ local constants = require('src.constants')
 
 local TrailParticle = GameObject:extend()
 
-function TrailParticle:new(x, y, radius, duration, color)
+function TrailParticle:new(x, y, opts)
   TrailParticle.super.new(self, x, y)
 
-  self.radius = radius or love.math.random(4, 6)
-  self.color = color or constants.default_color
+  self.radius = opts.radius or love.math.random(2, 4)
+  self.color = opts.color or constants.default_color
 
-  self.timer:tween(duration or love.math.random(0.3, 0.5), self, { radius = 0 }, 'linear', function()
+  self.timer:tween(opts.duration or love.math.random(0.15, 0.25), self, { radius = 0 }, 'in-cubic', function()
     self:die()
   end)
 end
