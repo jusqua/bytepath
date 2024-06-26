@@ -4,15 +4,17 @@ local GameObject = require('src.GameObject')
 local ShootEffect = require('src.ShootEffect')
 local Projectile = require('src.Projectile')
 local ExplodeParticle = require('src.ExplodeParticle')
+local utils = require('src.utils')
 
 local Player = GameObject:extend()
 
-function Player:new(x, y, area)
+function Player:new(x, y, engine, area)
   Player.super.new(self, x, y)
 
   local radius = 12
   self.width = radius
   self.height = radius
+  self.engine = engine
   self.area = area
   self.collider = area.world:newCircleCollider(self.x, self.y, self.width)
 
@@ -46,8 +48,8 @@ function Player:update(dt)
     self.linearVelocity * math.sin(self.angle)
   )
 
-  local gw, gh = love.window.getMode()
-  if self.x < 0 or self.y < 0 or self.x > gw or self.y > gh then
+  local virtualWidth, virtualHeight = utils.getVirtualWindowDimensions()
+  if self.x < 0 or self.y < 0 or self.x > virtualWidth or self.y > virtualHeight then
     self:die()
   end
 end
@@ -77,6 +79,8 @@ end
 
 function Player:die()
   Player.super.die(self)
+  self.engine:shake(6, 60, 0.4)
+  self.engine:slowdown(0.15, 1)
   for _ = 1, love.math.random(8, 12) do
     self.area:insert(ExplodeParticle(self.x, self.y))
   end

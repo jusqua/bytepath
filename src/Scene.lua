@@ -5,15 +5,16 @@ local Player = require('src.Player')
 
 local Scene = GameObject:extend()
 
-function Scene:new()
+function Scene:new(engine)
   Scene.super.new(self)
 
+  self.engine = engine
   self.area = Area()
   self.area:generateWorld()
 
   local wwidth, wheight, _ = love.window.getMode()
   local vx, vy = push.toGame(wwidth / 2, wheight / 2)
-  self.player = Player(vx, vy, self.area)
+  self.player = Player(vx, vy, engine, self.area)
 
   self.area:insert(self.player)
 end
@@ -35,6 +36,9 @@ end
 function Scene:destroy()
   self.area:destroy()
   self.area = nil
+  self.player:destroy()
+  self.player = nil
+  self.engine = nil
 end
 
 return Scene

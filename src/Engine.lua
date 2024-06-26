@@ -8,19 +8,21 @@ local Engine = GameObject:extend()
 function Engine:new()
   Engine.super.new(self)
 
-  self.scene = Scene()
+  self.slow_factor = 1
+
+  self.scene = Scene(self)
   self.camera = Camera()
 end
 
 function Engine:update(dt)
-  Engine.super.update(self, dt)
+  self.timer:update(dt * self.slow_factor)
 
   if self.scene then
-    self.scene:update(dt)
+    self.scene:update(dt * self.slow_factor)
   end
 
   local w, h = utils.getWindowDimensions()
-  self.camera:lockPosition(w / 2, h / 2, Camera.smooth.damped(5))
+  self.camera:lockPosition(w / 2, h / 2, Camera.smooth.damped(6))
 end
 
 function Engine:draw()
@@ -29,6 +31,15 @@ function Engine:draw()
     self.scene:draw()
   end
   self.camera:detach()
+end
+
+function Engine:shake(amplitude, frequency, duration)
+  utils.shakeCamera(self.camera, self.timer, amplitude, frequency, duration)
+end
+
+function Engine:slowdown(factor, duration)
+  self.slow_factor = factor
+  self.timer:tween(duration, self, { slow_factor = 1 }, 'in-out-cubic')
 end
 
 function Engine:attach(scene)
