@@ -3,6 +3,7 @@ local Moses = require('lib.moses.moses')
 local GameObject = require('src.GameObject')
 local ShootEffect = require('src.ShootEffect')
 local Projectile = require('src.Projectile')
+local ExplodeParticle = require('src.ExplodeParticle')
 
 local Player = GameObject:extend()
 
@@ -35,12 +36,20 @@ function Player:update(dt)
   if select(1, Input.down('right')) then
     self.angle = self.angle + self.angularVelocity * dt
   end
+  if select(1, Input.down('d')) then
+    self:die()
+  end
 
   self.linearVelocity = math.min(self.linearVelocity + self.acceleration * dt, self.maxLinearVelocity)
   self.collider:setLinearVelocity(
     self.linearVelocity * math.cos(self.angle),
     self.linearVelocity * math.sin(self.angle)
   )
+
+  local gw, gh = love.window.getMode()
+  if self.x < 0 or self.y < 0 or self.x > gw or self.y > gh then
+    self:die()
+  end
 end
 
 function Player:draw()
@@ -63,6 +72,13 @@ function Player:shoot(amount, offset, theta, attributes)
     local y = self.y + d * math.sin(self.angle) + doff * math.sin(self.angle - math.pi / 2)
 
     self.area:insert(Projectile(x, y, attr))
+  end
+end
+
+function Player:die()
+  Player.super.die(self)
+  for _ = 1, love.math.random(8, 12) do
+    self.area:insert(ExplodeParticle(self.x, self.y))
   end
 end
 

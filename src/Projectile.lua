@@ -1,4 +1,6 @@
+local push = require('lib.push.push')
 local GameObject = require('src.GameObject')
+local ProjectileDeathEffect = require('src.ProjectileDeathEffect')
 
 local Projectile = GameObject:extend()
 
@@ -30,6 +32,11 @@ function Projectile:update(dt)
     self.linearVelocity * math.cos(self.angle),
     self.linearVelocity * math.sin(self.angle)
   )
+
+  local ww, wh = push.toGame(love.window.getMode())
+  if self.x < 0 or self.y < 0 or self.x > ww or self.y > wh then
+    self:die()
+  end
 end
 
 function Projectile:draw()
@@ -38,6 +45,11 @@ end
 
 function Projectile:destroy()
   Projectile.super.destroy(self)
+end
+
+function Projectile:die()
+  Projectile.super.die(self)
+  self.area:insert(ProjectileDeathEffect(self.x, self.y, self.radius * 3))
 end
 
 return Projectile

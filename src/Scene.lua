@@ -23,7 +23,7 @@ function Scene:update(dt)
 
   self.area:update(dt)
 
-  if not self.player.alive then
+  if self.player and not self.player.alive then
     self.player = nil
   end
 end
