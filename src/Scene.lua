@@ -13,7 +13,7 @@ function Scene:new()
 
   local wwidth, wheight, _ = love.window.getMode()
   local vx, vy = push.toGame(wwidth / 2, wheight / 2)
-  self.player = Player(vx, vy, self.area.world)
+  self.player = Player(vx, vy, self.area)
 
   self.area:insert(self.player)
 end
