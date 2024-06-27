@@ -1,7 +1,7 @@
 local utils = require('src.utils')
 local GameObject = require('src.GameObject')
 local ExplodeParticle = require('src.ExplodeParticle')
-local constants = require('src.constants')
+local colors = require('src.constants.colors')
 local BoostEffect = require('src.BoostEffect')
 local InfoText = require('src.InfoText')
 
@@ -31,7 +31,7 @@ function Boost:update(dt)
 end
 
 function Boost:draw()
-  love.graphics.setColor(constants.boost_color)
+  love.graphics.setColor(colors.normal.boost)
   love.graphics.push()
   love.graphics.translate(self.x, self.y)
   love.graphics.rotate(self.collider:getAngle())
@@ -41,15 +41,15 @@ function Boost:draw()
   love.graphics.rectangle('fill', self.x - inner / 2, self.y - inner / 2, inner, inner)
   love.graphics.rectangle('line', self.x - outer / 2, self.y - outer / 2, outer, outer)
   love.graphics.pop()
-  love.graphics.setColor(constants.default_color)
+  love.graphics.setColor(colors.normal.default)
 end
 
 function Boost:die()
   Boost.super.die(self)
   self.area:insert(BoostEffect(self.x, self.y))
-  self.area:insert(InfoText(self.x, self.y, '+BOOST', constants.boost_color))
+  self.area:insert(InfoText(self.x, self.y, '+BOOST', colors.normal.boost))
   for _ = 1, love.math.random(4, 8) do
-    self.area:insert(ExplodeParticle(self.x, self.y, constants.boost_color))
+    self.area:insert(ExplodeParticle(self.x, self.y, colors.normal.boost))
   end
 end
 

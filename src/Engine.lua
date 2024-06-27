@@ -2,7 +2,7 @@ local Camera = require('lib.hump.camera')
 local GameObject = require('src.GameObject')
 local Scene = require('src.Scene')
 local utils = require('src.utils')
-local constants = require('src.constants')
+local colors = require('src.constants.colors')
 
 local Engine = GameObject:extend()
 
@@ -30,11 +30,11 @@ end
 function Engine:draw()
   if self.flash_frames > 0 then
     self.flash_frames = self.flash_frames - 1
-    love.graphics.setColor(constants.background_color)
+    love.graphics.setColor(colors.normal.background)
     love.graphics.rectangle('fill', 0, 0, utils.getVirtualWindowDimensions())
   end
 
-  love.graphics.setColor(constants.default_color)
+  love.graphics.setColor(colors.normal.default)
   self.camera:attach()
   if self.scene then
     self.scene:draw()

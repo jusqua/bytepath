@@ -6,7 +6,7 @@ local Projectile = require('src.Projectile')
 local ExplodeParticle = require('src.ExplodeParticle')
 local utils = require('src.utils')
 local TickEffect = require('src.TickEffect')
-local constants = require('src.constants')
+local colors = require('src.constants.colors')
 local ships = require('src.ships')
 local Ammo = require('src.Ammo')
 local Boost = require('src.Boost')
@@ -27,7 +27,7 @@ function Player:new(x, y, engine, area)
   self.baseMaxLinearVelocity = 100
   self.maxLinearVelocity = self.baseMaxLinearVelocity
   self.acceleration = 100
-  self.trail_color = constants.skill_point_color
+  self.trail_color = colors.normal.skill_point
 
   self.maxAmmo = 100
   self.ammo = self.maxAmmo
@@ -70,7 +70,7 @@ function Player:update(dt)
 
   self:changeBoostBy(10 * dt)
   self.boosting = false
-  self.trail_color = constants.skill_point_color
+  self.trail_color = colors.normal.skill_point
 
   self.boost_timer = self.boost_timer + dt
   if self.boost_timer >= self.boost_cooldown then
@@ -102,7 +102,7 @@ function Player:update(dt)
   end
 
   if self.boosting then
-    self.trail_color = constants.boost_color
+    self.trail_color = colors.normal.boost
   end
 
   self.linearVelocity = math.min(self.linearVelocity + self.acceleration * dt, self.maxLinearVelocity)

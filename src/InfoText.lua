@@ -1,7 +1,6 @@
 local utf8 = require('lib.utf8')
-local Moses = require('lib.moses.moses')
 local GameObject = require('src.GameObject')
-local constants = require('src.constants')
+local colors = require('src.constants.colors')
 local fonts = require('src.fonts')
 
 local InfoText = GameObject:extend()
@@ -9,26 +8,10 @@ local InfoText = GameObject:extend()
 function InfoText:new(x, y, text, color)
   InfoText.super.new(self, x, y)
 
-  local default_colors = {
-    constants.default_color,
-    constants.hp_color,
-    constants.ammo_color,
-    constants.boost_color,
-    constants.skill_point_color,
-  }
-  local negative_colors = {
-    { 1 - constants.default_color[1], 1 - constants.default_color[2], 1 - constants.default_color[3] },
-    { 1 - constants.hp_color[1], 1 - constants.hp_color[2], 1 - constants.hp_color[3] },
-    { 1 - constants.ammo_color[1], 1 - constants.ammo_color[2], 1 - constants.ammo_color[3] },
-    { 1 - constants.boost_color[1], 1 - constants.boost_color[2], 1 - constants.boost_color[3] },
-    { 1 - constants.skill_point_color[1], 1 - constants.skill_point_color[2], 1 - constants.skill_point_color[3] },
-  }
-  local all_colors = Moses.append(default_colors, negative_colors)
-
   self.font = fonts.m5x7_16
   self.depth = 80
   self.text = text
-  self.color = color or constants.default_color
+  self.color = color or colors.normal.default
   self.characters = {}
   for i = 1, #self.text do
     table.insert(self.characters, utf8.sub(self.text, i, i))
@@ -48,13 +31,13 @@ function InfoText:new(x, y, text, color)
         end
 
         if love.math.random(100) <= 30 then
-          self.bg_colors[i] = all_colors[love.math.random(#all_colors)]
+          self.bg_colors[i] = colors.all[love.math.random(#colors.all)]
         else
           self.bg_colors[i] = nil
         end
 
         if love.math.random(100) <= 5 then
-          self.fg_colors[i] = all_colors[love.math.random(#all_colors)]
+          self.fg_colors[i] = colors.all[love.math.random(#colors.all)]
         else
           self.fg_colors[i] = nil
         end
@@ -105,7 +88,7 @@ function InfoText:draw()
     love.graphics.print(self.characters[i], self.x + width, self.y, 0, 1, 1, 0, self.font:getHeight() / 2)
   end
 
-  love.graphics.setColor(constants.default_color)
+  love.graphics.setColor(colors.normal.default)
 end
 
 return InfoText

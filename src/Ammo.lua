@@ -1,8 +1,8 @@
 local vector = require('lib.hump.vector')
 local GameObject = require('src.GameObject')
 local ExplodeParticle = require('src.ExplodeParticle')
-local constants = require('src.constants')
-local AmmoEffect= require('src.AmmoEffect')
+local colors = require('src.constants.colors')
+local AmmoEffect = require('src.AmmoEffect')
 
 local Ammo = GameObject:extend()
 
@@ -44,21 +44,21 @@ function Ammo:update(dt)
 end
 
 function Ammo:draw()
-  love.graphics.setColor(constants.ammo_color)
+  love.graphics.setColor(colors.normal.ammo)
   love.graphics.push()
   love.graphics.translate(self.x, self.y)
   love.graphics.rotate(self.collider:getAngle())
   love.graphics.translate(-self.x, -self.y)
   love.graphics.rectangle('line', self.x - self.width / 2, self.y - self.height / 2, self.width, self.height)
   love.graphics.pop()
-  love.graphics.setColor(constants.default_color)
+  love.graphics.setColor(colors.normal.default)
 end
 
 function Ammo:die()
   Ammo.super.die(self)
   self.area:insert(AmmoEffect(self.x, self.y))
   for _ = 1, love.math.random(4, 8) do
-    self.area:insert(ExplodeParticle(self.x, self.y, constants.ammo_color))
+    self.area:insert(ExplodeParticle(self.x, self.y, colors.normal.ammo))
   end
 end
 
