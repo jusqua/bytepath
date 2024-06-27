@@ -50,8 +50,13 @@ local function getVirtualWindowDimensions()
   return width, height
 end
 
+local function rotate(x, y, angle)
+  return x * math.cos(angle) - y * math.sin(angle), y * math.cos(angle) + x * math.sin(angle)
+end
+
 return {
   shakeCamera = shakeCamera,
   getWindowDimensions = getWindowDimensions,
   getVirtualWindowDimensions = getVirtualWindowDimensions,
+  rotate = rotate,
 }
