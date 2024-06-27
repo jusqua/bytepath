@@ -42,18 +42,18 @@ function InfoText:new(x, y, text, color)
     self.timer:every(0.035, function()
       local random_characters = '0123456789!@#$%¨&*()-=+[]^~/;?><.,|ABCDEFGHIJKLMNOPQRSTUVWYXZ'
       for i = 1, #self.characters do
-        if love.math.random(1, 20) <= 1 then
+        if love.math.random(100) <= 20 then
           local r = love.math.random(#random_characters)
           self.characters[i] = utf8.sub(random_characters, r, r)
         end
 
-        if love.math.random(1, 20) <= 1 then
+        if love.math.random(100) <= 30 then
           self.bg_colors[i] = all_colors[love.math.random(#all_colors)]
         else
           self.bg_colors[i] = nil
         end
 
-        if love.math.random(1, 20) <= 2 then
+        if love.math.random(100) <= 5 then
           self.fg_colors[i] = all_colors[love.math.random(#all_colors)]
         else
           self.fg_colors[i] = nil
