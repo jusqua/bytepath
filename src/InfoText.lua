@@ -75,10 +75,6 @@ function InfoText:new(x, y, text, color)
   end)
 end
 
-function InfoText:update(dt)
-  InfoText.super.update(self, dt)
-end
-
 function InfoText:draw()
   if not self.visible then
     return
@@ -110,14 +106,6 @@ function InfoText:draw()
   end
 
   love.graphics.setColor(constants.default_color)
-end
-
-function InfoText:destroy()
-  InfoText.super.destroy(self)
-end
-
-function InfoText:die()
-  InfoText.super.die(self)
 end
 
 return InfoText
