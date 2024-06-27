@@ -10,6 +10,7 @@ local colors = require('src.constants.colors')
 local ships = require('src.ships')
 local Ammo = require('src.Ammo')
 local Boost = require('src.Boost')
+local HP = require('src.HP')
 
 local Player = GameObject:extend()
 
@@ -119,6 +120,8 @@ function Player:update(dt)
       self:changeAmmoBy(5)
     elseif object:is(Boost) then
       self:changeBoostBy(25)
+    elseif object:is(HP) then
+      self:changeHPBy(25)
     end
     object:die()
   end
