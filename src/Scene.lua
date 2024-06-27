@@ -5,6 +5,7 @@ local Player = require('src.Player')
 local Input = require('lib.input.input')
 local Ammo = require('src.Ammo')
 local utils = require('src.utils')
+local Boost = require('src.Boost')
 
 local Scene = GameObject:extend()
 
@@ -30,9 +31,12 @@ function Scene:update(dt)
 
   self.area:update(dt)
 
-  if select(1, Input.down('p')) then
-    local virtualWidth, virtualHeight = utils.getVirtualWindowDimensions()
+  local virtualWidth, virtualHeight = utils.getVirtualWindowDimensions()
+  if select(1, Input.pressed('p')) then
     self.area:insert(Ammo(love.math.random(0, virtualWidth), love.math.random(0, virtualHeight), self))
+  end
+  if select(1, Input.pressed('o')) then
+    self.area:insert(Boost(self))
   end
 
   if self.player and not self.player.alive then

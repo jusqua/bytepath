@@ -8,7 +8,7 @@ local utils = require('src.utils')
 local TickEffect = require('src.TickEffect')
 local constants = require('src.constants')
 local ships = require('src.ships')
-local Ammo  = require('src.Ammo')
+local Ammo = require('src.Ammo')
 
 local Player = GameObject:extend()
 
@@ -112,9 +112,7 @@ function Player:update(dt)
   if self.collider:enter('Collectable') then
     local collisionData = self.collider:getEnterCollisionData('Collectable')
     local object = collisionData.collider:getObject()
-    if object:is(Ammo) then
-      object:die()
-    end
+    object:die()
   end
 
   if self.x < 0 or self.y < 0 or self.x > virtualWidth or self.y > virtualHeight then
