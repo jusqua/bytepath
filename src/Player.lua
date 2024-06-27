@@ -84,7 +84,7 @@ function Player:update(dt)
     self.boosting = true
     self.maxLinearVelocity = self.baseMaxLinearVelocity * 1.5
     self:changeBoostBy(-50 * dt)
-    if self.boost < 0 then
+    if self.boost <= 0 then
       self.boosting = false
       self.can_boost = false
       self.boost_timer = 0
@@ -94,7 +94,7 @@ function Player:update(dt)
     self.boosting = true
     self.maxLinearVelocity = self.baseMaxLinearVelocity * 0.5
     self:changeBoostBy(-50 * dt)
-    if self.boost < 0 then
+    if self.boost <= 0 then
       self.boosting = false
       self.can_boost = false
       self.boost_timer = 0
@@ -151,12 +151,13 @@ end
 
 function Player:shoot(amount, offset, theta, attributes)
   self.area:insert(ShootEffect(self.x, self.y, self))
-  self:changeAmmoBy(-amount)
 
   amount = amount or 1
   offset = offset or 0
   theta = theta or 0
   attributes = attributes or {}
+
+  self:changeAmmoBy(-amount)
 
   local angle = self.angle + theta * (amount - 1) / 2
   local delta = offset * (amount - 1) / 2
