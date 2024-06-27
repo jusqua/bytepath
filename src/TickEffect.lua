@@ -5,6 +5,7 @@ local TickEffect = GameObject:extend()
 function TickEffect:new(x, y, parent)
   TickEffect.super.new(self, x, y)
 
+  self.depth = 75
   self.width, self.height = 48, 32
   self.offset = 0
   self.parent = parent

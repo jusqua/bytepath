@@ -30,6 +30,13 @@ function Area:update(dt)
 end
 
 function Area:draw()
+  table.sort(self.game_objects, function(a, b)
+    if a.depth == b.depth then
+      return a.createdAt < b.createdAt
+    end
+    return a.depth < b.depth
+  end)
+
   if self.world then
     self.world:draw(0)
   end

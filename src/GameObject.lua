@@ -12,6 +12,8 @@ function GameObject:new(x, y)
   self.id = M.uid()
   self.timer = Timer()
   self.collider = nil
+  self.depth = 50
+  self.createdAt = love.timer.getTime()
 end
 
 function GameObject:update(dt)
