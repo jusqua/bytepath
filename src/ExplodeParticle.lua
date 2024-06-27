@@ -1,10 +1,12 @@
 local GameObject = require('src.GameObject')
+local constants  = require('src.constants')
 
 local ExplodeParticle = GameObject:extend()
 
-function ExplodeParticle:new(x, y)
+function ExplodeParticle:new(x, y, color)
   ExplodeParticle.super.new(self, x, y)
 
+  self.color = color or constants.default_color
   self.angle = love.math.random(0, math.pi * 2)
   self.linearVelocity = love.math.random(75, 150)
   self.size = love.math.random(2, 3)
@@ -32,7 +34,9 @@ function ExplodeParticle:draw()
   love.graphics.rotate(self.angle)
   love.graphics.translate(-self.x, -self.y)
   love.graphics.setLineWidth(self.lineWidth)
+  love.graphics.setColor(self.color)
   love.graphics.line(self.x - self.size, self.y, self.x + self.size, self.y)
+  love.graphics.setColor(constants.default_color)
   love.graphics.setLineWidth(1)
   love.graphics.pop()
 end

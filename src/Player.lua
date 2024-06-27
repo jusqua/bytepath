@@ -8,6 +8,7 @@ local utils = require('src.utils')
 local TickEffect = require('src.TickEffect')
 local constants = require('src.constants')
 local ships = require('src.ships')
+local Ammo  = require('src.Ammo')
 
 local Player = GameObject:extend()
 
@@ -26,6 +27,9 @@ function Player:new(x, y, engine, area)
   self.maxLinearVelocity = self.baseMaxLinearVelocity
   self.acceleration = 100
   self.trail_color = constants.skill_point_color
+
+  self.maxAmmo = 100
+  self.ammo = self.maxAmmo
 
   self.maxBoost = 100
   self.boost = self.maxBoost
@@ -105,6 +109,14 @@ function Player:update(dt)
   )
 
   local virtualWidth, virtualHeight = utils.getVirtualWindowDimensions()
+  if self.collider:enter('Collectable') then
+    local collisionData = self.collider:getEnterCollisionData('Collectable')
+    local object = collisionData.collider:getObject()
+    if object:is(Ammo) then
+      object:die()
+    end
+  end
+
   if self.x < 0 or self.y < 0 or self.x > virtualWidth or self.y > virtualHeight then
     self:die()
   end
@@ -169,6 +181,10 @@ function Player:tick()
   self.area:insert(TickEffect(self.x, self.y, self))
 end
 
+function Player:addAmmo(amount)
+  self.ammo = math.min(self.ammo + amount, self.maxAmmo)
+end
+
 function Player:attach(ship)
   self.ship = ship
   self.width = self.ship.width
@@ -179,6 +195,7 @@ function Player:attach(ship)
   end
   self.collider = self.area.world:newCircleCollider(self.x, self.y, self.ship.width)
   self.collider:setObject(self)
+  self.collider:setCollisionClass('Player')
 end
 
 return Player
