@@ -47,7 +47,15 @@ end
 function Boost:die()
   Boost.super.die(self)
   self.area:insert(BoostEffect(self.x, self.y))
-  self.area:insert(InfoText(self.x, self.y, '+BOOST', colors.normal.boost))
+
+  self.area:insert(
+    InfoText(
+      self.x + love.math.random(-self.width, self.width),
+      self.y + love.math.random(-self.height, self.height),
+      '+BOOST',
+      colors.normal.boost
+    )
+  )
   for _ = 1, love.math.random(4, 8) do
     self.area:insert(ExplodeParticle(self.x, self.y, colors.normal.boost))
   end
