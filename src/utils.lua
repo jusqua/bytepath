@@ -54,9 +54,20 @@ local function rotate(x, y, angle)
   return x * math.cos(angle) - y * math.sin(angle), y * math.cos(angle) + x * math.sin(angle)
 end
 
+local function createColor(r, g, b)
+  return { r / 255, g / 255, b / 255 }
+end
+
+local function createNegativeColor(color)
+  local r, g, b = unpack(color)
+  return { 1 - r, 1 - g, 1 - b }
+end
+
 return {
   shakeCamera = shakeCamera,
   getWindowDimensions = getWindowDimensions,
   getVirtualWindowDimensions = getVirtualWindowDimensions,
   rotate = rotate,
+  createColor = createColor,
+  createNegativeColor = createNegativeColor,
 }
