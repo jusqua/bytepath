@@ -27,6 +27,13 @@ function Player:new(x, y, engine, area)
   self.acceleration = 100
   self.trail_color = constants.skill_point_color
 
+  self.maxBoost = 100
+  self.boost = self.maxBoost
+  self.boosting = false
+  self.can_boost = true
+  self.boost_timer = 0
+  self.boost_cooldown = 2
+
   self.timer:every(0.24, function()
     self:shoot()
   end)
@@ -36,7 +43,11 @@ function Player:new(x, y, engine, area)
   end)
 
   self.timer:every(0.01, function()
-    self:boost()
+    local trails = self.ship:trails()
+
+    for _, trail in ipairs(trails) do
+      self.area:insert(trail)
+    end
   end)
 end
 
@@ -50,14 +61,40 @@ function Player:update(dt)
     self.angle = self.angle + self.angularVelocity * dt
   end
 
-  self.maxLinearVelocity = self.baseMaxLinearVelocity
+  self.boost = math.min(self.boost + 10 * dt, self.maxBoost)
+  self.boosting = false
   self.trail_color = constants.skill_point_color
-  if select(1, Input.down('up')) then
-    self.maxLinearVelocity = self.baseMaxLinearVelocity * 1.5
-    self.trail_color = constants.boost_color
+
+  self.boost_timer = self.boost_timer + dt
+  if self.boost_timer >= self.boost_cooldown then
+    self.can_boost = true
+    self.boost_timer = 2
   end
-  if select(1, Input.down('down')) then
+
+  self.boosting = false
+  self.maxLinearVelocity = self.baseMaxLinearVelocity
+  if select(1, Input.down('up')) and self.boost > 0 and self.can_boost then
+    self.boosting = true
+    self.maxLinearVelocity = self.baseMaxLinearVelocity * 1.5
+    self.boost = self.boost - 50 * dt
+    if self.boost < 0 then
+      self.boosting = false
+      self.can_boost = false
+      self.boost_timer = 0
+    end
+  end
+  if select(1, Input.down('down')) and self.boost > 0 and self.can_boost then
+    self.boosting = true
     self.maxLinearVelocity = self.baseMaxLinearVelocity * 0.5
+    self.boost = self.boost - 50 * dt
+    if self.boost < 0 then
+      self.boosting = false
+      self.can_boost = false
+      self.boost_timer = 0
+    end
+  end
+
+  if self.boosting then
     self.trail_color = constants.boost_color
   end
 
@@ -130,14 +167,6 @@ end
 
 function Player:tick()
   self.area:insert(TickEffect(self.x, self.y, self))
-end
-
-function Player:boost()
-  local trails = self.ship:trails()
-
-  for _, trail in ipairs(trails) do
-    self.area:insert(trail)
-  end
 end
 
 function Player:attach(ship)
