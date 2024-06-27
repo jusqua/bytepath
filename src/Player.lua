@@ -9,6 +9,7 @@ local TickEffect = require('src.TickEffect')
 local constants = require('src.constants')
 local ships = require('src.ships')
 local Ammo = require('src.Ammo')
+local Boost = require('src.Boost')
 
 local Player = GameObject:extend()
 
@@ -30,9 +31,11 @@ function Player:new(x, y, engine, area)
 
   self.maxAmmo = 100
   self.ammo = self.maxAmmo
-
+  self.maxHP = 100
+  self.hp = self.maxHP
   self.maxBoost = 100
   self.boost = self.maxBoost
+
   self.boosting = false
   self.can_boost = true
   self.boost_timer = 0
@@ -65,7 +68,7 @@ function Player:update(dt)
     self.angle = self.angle + self.angularVelocity * dt
   end
 
-  self.boost = math.min(self.boost + 10 * dt, self.maxBoost)
+  self:changeBoostBy(10 * dt)
   self.boosting = false
   self.trail_color = constants.skill_point_color
 
@@ -80,7 +83,7 @@ function Player:update(dt)
   if select(1, Input.down('up')) and self.boost > 0 and self.can_boost then
     self.boosting = true
     self.maxLinearVelocity = self.baseMaxLinearVelocity * 1.5
-    self.boost = self.boost - 50 * dt
+    self:changeBoostBy(-50 * dt)
     if self.boost < 0 then
       self.boosting = false
       self.can_boost = false
@@ -90,7 +93,7 @@ function Player:update(dt)
   if select(1, Input.down('down')) and self.boost > 0 and self.can_boost then
     self.boosting = true
     self.maxLinearVelocity = self.baseMaxLinearVelocity * 0.5
-    self.boost = self.boost - 50 * dt
+    self:changeBoostBy(-50 * dt)
     if self.boost < 0 then
       self.boosting = false
       self.can_boost = false
@@ -112,6 +115,11 @@ function Player:update(dt)
   if self.collider:enter('Collectable') then
     local collisionData = self.collider:getEnterCollisionData('Collectable')
     local object = collisionData.collider:getObject()
+    if object:is(Ammo) then
+      self:changeAmmoBy(5)
+    elseif object:is(Boost) then
+      self:changeBoostBy(25)
+    end
     object:die()
   end
 
@@ -143,6 +151,7 @@ end
 
 function Player:shoot(amount, offset, theta, attributes)
   self.area:insert(ShootEffect(self.x, self.y, self))
+  self:changeAmmoBy(-amount)
 
   amount = amount or 1
   offset = offset or 0
@@ -179,8 +188,16 @@ function Player:tick()
   self.area:insert(TickEffect(self.x, self.y, self))
 end
 
-function Player:addAmmo(amount)
-  self.ammo = math.min(self.ammo + amount, self.maxAmmo)
+function Player:changeAmmoBy(amount)
+  self.ammo = math.max(0, math.min(self.ammo + amount, self.maxAmmo))
+end
+
+function Player:changeHPBy(amount)
+  self.hp = math.max(0, math.min(self.hp + amount, self.maxHP))
+end
+
+function Player:changeBoostBy(amount)
+  self.boost = math.max(0, math.min(self.boost + amount, self.maxBoost))
 end
 
 function Player:attach(ship)
