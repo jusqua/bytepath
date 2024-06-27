@@ -3,6 +3,7 @@ local GameObject = require('src.GameObject')
 local ExplodeParticle = require('src.ExplodeParticle')
 local constants = require('src.constants')
 local BoostEffect = require('src.BoostEffect')
+local InfoText = require('src.InfoText')
 
 local Boost = GameObject:extend()
 
@@ -46,6 +47,7 @@ end
 function Boost:die()
   Boost.super.die(self)
   self.area:insert(BoostEffect(self.x, self.y))
+  self.area:insert(InfoText(self.x, self.y, '+BOOST', constants.boost_color))
   for _ = 1, love.math.random(4, 8) do
     self.area:insert(ExplodeParticle(self.x, self.y, constants.boost_color))
   end
