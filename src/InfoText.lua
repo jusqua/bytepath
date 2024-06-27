@@ -1,7 +1,7 @@
 local utf8 = require('lib.utf8')
 local GameObject = require('src.GameObject')
 local colors = require('src.constants.colors')
-local fonts = require('src.fonts')
+local fonts = require('src.constants.fonts')
 
 local InfoText = GameObject:extend()
 
