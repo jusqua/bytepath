@@ -63,6 +63,11 @@ local function createNegativeColor(color)
   return { 1 - r, 1 - g, 1 - b }
 end
 
+local function random(min, max)
+  min, max = min or 0, max or 1
+  return (min > max and (love.math.random() * (min - max) + max)) or (love.math.random() * (max - min) + min)
+end
+
 return {
   shakeCamera = shakeCamera,
   getWindowDimensions = getWindowDimensions,
@@ -70,4 +75,5 @@ return {
   rotate = rotate,
   createColor = createColor,
   createNegativeColor = createNegativeColor,
+  random = random,
 }
