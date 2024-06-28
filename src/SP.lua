@@ -32,9 +32,7 @@ end
 function SP:draw()
   love.graphics.setColor(colors.normal.skill_point)
   love.graphics.push()
-  love.graphics.translate(self.x, self.y)
-  love.graphics.rotate(self.collider:getAngle())
-  love.graphics.translate(-self.x, -self.y)
+  utils.rotateAtPosition(self.x, self.y, self.collider:getAngle())
   local inner = 0.5 * self.width
   local outer = 1.5 * self.width
   love.graphics.rectangle('fill', self.x - inner / 2, self.y - inner / 2, inner, inner)

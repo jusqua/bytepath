@@ -36,7 +36,7 @@ function Scene:update(dt)
 
   local virtualWidth, virtualHeight = utils.getVirtualWindowDimensions()
   if select(1, Input.pressed('p')) then
-    self.area:insert(Ammo(love.math.random(0, virtualWidth), love.math.random(0, virtualHeight), self))
+    self.area:insert(Ammo(utils.random(virtualWidth), utils.random(virtualHeight), self))
   end
   if select(1, Input.pressed('o')) then
     self.area:insert(Boost(self))

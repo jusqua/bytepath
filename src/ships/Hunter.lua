@@ -1,5 +1,6 @@
 local Object = require('lib.classic.classic')
 local TrailParticle = require('src.TrailParticle')
+local utils = require('src.utils')
 
 local Hunter = Object:extend()
 
@@ -54,7 +55,7 @@ function Hunter:trails()
   local x = self.player.x - d * math.cos(self.player.angle)
   local y = self.player.y - d * math.sin(self.player.angle)
 
-  table.insert(trails, TrailParticle(x, y, { radius = love.math.random(3, 6), color = self.player.trail_color }))
+  table.insert(trails, TrailParticle(x, y, { radius = utils.random(3, 6), color = self.player.trail_color }))
 
   return trails
 end

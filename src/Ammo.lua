@@ -3,6 +3,7 @@ local GameObject = require('src.GameObject')
 local ExplodeParticle = require('src.ExplodeParticle')
 local colors = require('src.constants.colors')
 local AmmoEffect = require('src.AmmoEffect')
+local utils = require('src.utils')
 
 local Ammo = GameObject:extend()
 
@@ -15,13 +16,13 @@ function Ammo:new(x, y, scene)
   self.collider = self.area.world:newRectangleCollider(self.x, self.y, self.width, self.height)
   self.collider:setObject(self)
   self.collider:setFixedRotation(false)
-  self.angle = love.math.random(0, math.pi * 2)
-  self.linearVelocity = love.math.random(10, 20)
+  self.angle = utils.random(0, math.pi * 2)
+  self.linearVelocity = utils.random(10, 20)
   self.collider:setLinearVelocity(
     self.linearVelocity * math.cos(self.angle),
     self.linearVelocity * math.sin(self.angle)
   )
-  self.collider:applyAngularImpulse(love.math.random(-24, 24))
+  self.collider:applyAngularImpulse(utils.random(-24, 24))
   self.collider:setCollisionClass('Collectable')
 end
 
@@ -46,9 +47,7 @@ end
 function Ammo:draw()
   love.graphics.setColor(colors.normal.ammo)
   love.graphics.push()
-  love.graphics.translate(self.x, self.y)
-  love.graphics.rotate(self.collider:getAngle())
-  love.graphics.translate(-self.x, -self.y)
+  utils.rotateAtPosition(self.x, self.y, self.collider:getAngle())
   love.graphics.rectangle('line', self.x - self.width / 2, self.y - self.height / 2, self.width, self.height)
   love.graphics.pop()
   love.graphics.setColor(colors.normal.default)

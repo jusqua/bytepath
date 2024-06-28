@@ -1,5 +1,6 @@
 local Object = require('lib.classic.classic')
 local TrailParticle = require('src.TrailParticle')
+local utils = require('src.utils')
 
 local Fighter = Object:extend()
 
@@ -62,7 +63,7 @@ function Fighter:trails()
     TrailParticle(
       x + offset * math.cos(self.player.angle - math.pi / 2),
       y + offset * math.sin(self.player.angle - math.pi / 2),
-      { radius = love.math.random(1, 3), color = self.player.trail_color }
+      { radius = utils.random(1, 3), color = self.player.trail_color }
     )
   )
 
@@ -71,7 +72,7 @@ function Fighter:trails()
     TrailParticle(
       x + offset * math.cos(self.player.angle + math.pi / 2),
       y + offset * math.sin(self.player.angle + math.pi / 2),
-      { radius = love.math.random(1, 3), color = self.player.trail_color }
+      { radius = utils.random(1, 3), color = self.player.trail_color }
     )
   )
 

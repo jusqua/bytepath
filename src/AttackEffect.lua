@@ -1,5 +1,6 @@
 local GameObject = require('src.GameObject')
 local colors = require('src.constants.colors')
+local utils = require('src.utils')
 
 local AttackEffect = GameObject:extend()
 
@@ -34,12 +35,11 @@ function AttackEffect:draw()
     return
   end
 
-  love.graphics.push()
-  love.graphics.translate(self.x, self.y)
-  love.graphics.rotate(math.pi / 4)
-  love.graphics.translate(-self.x, -self.y)
   local inner = 1.3 * self.width * self.scale
   local outer = 1.5 * self.width * self.scale
+
+  love.graphics.push()
+  utils.rotateAtPosition(self.x, self.y, math.pi / 4)
   love.graphics.setColor(self.color)
   love.graphics.rectangle('line', self.x - outer / 2, self.y - outer / 2, outer, outer)
   love.graphics.setColor(colors.normal.default)

@@ -1,5 +1,6 @@
 local Object = require('lib.classic.classic')
 local TrailParticle = require('src.TrailParticle')
+local utils = require('src.utils')
 
 local Assassin = Object:extend()
 
@@ -49,14 +50,14 @@ function Assassin:trails()
   local y = self.player.y - d * math.sin(self.player.angle)
   local offset = 1.3 * self.width
 
-  table.insert(trails, TrailParticle(x, y, { radius = love.math.random(1.0, 2.2), color = self.player.trail_color }))
+  table.insert(trails, TrailParticle(x, y, { radius = utils.random(1.0, 2.2), color = self.player.trail_color }))
 
   table.insert(
     trails,
     TrailParticle(
       x + offset * math.cos(self.player.angle - math.pi / 2),
       y + offset * math.sin(self.player.angle - math.pi / 2),
-      { radius = love.math.random(0.5, 1.5), color = self.player.trail_color }
+      { radius = utils.random(0.5, 1.5), color = self.player.trail_color }
     )
   )
 
@@ -65,7 +66,7 @@ function Assassin:trails()
     TrailParticle(
       x + offset * math.cos(self.player.angle + math.pi / 2),
       y + offset * math.sin(self.player.angle + math.pi / 2),
-      { radius = love.math.random(0.5, 1.5), color = self.player.trail_color }
+      { radius = utils.random(0.5, 1.5), color = self.player.trail_color }
     )
   )
 

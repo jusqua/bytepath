@@ -1,5 +1,6 @@
 local Object = require('lib.classic.classic')
 local TrailParticle = require('src.TrailParticle')
+local utils = require('src.utils')
 
 local Trash = Object:extend()
 
@@ -45,7 +46,7 @@ function Trash:trails()
   local y = self.player.y - d * math.sin(self.player.angle)
   local offset = 0.3 * self.width
 
-  table.insert(trails, TrailParticle(x, y, { color = self.player.trail_color, duration = love.math.random(0.25, 0.3) }))
+  table.insert(trails, TrailParticle(x, y, { color = self.player.trail_color, duration = utils.random(0.25, 0.3) }))
 
   table.insert(
     trails,

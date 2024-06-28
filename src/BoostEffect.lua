@@ -1,5 +1,6 @@
 local GameObject = require('src.GameObject')
 local colors = require('src.constants.colors')
+local utils = require('src.utils')
 
 local BoostEffect = GameObject:extend()
 
@@ -34,13 +35,12 @@ function BoostEffect:draw()
     return
   end
 
-  love.graphics.push()
-  love.graphics.translate(self.x, self.y)
-  love.graphics.rotate(math.pi / 4)
-  love.graphics.translate(-self.x, -self.y)
-  love.graphics.setColor(self.color)
   local inner = self.width
   local outer = 2 * self.width * self.scale
+
+  love.graphics.push()
+  utils.rotateAtPosition(self.x, self.y, math.pi / 4)
+  love.graphics.setColor(self.color)
   love.graphics.rectangle('fill', self.x - inner / 2, self.y - inner / 2, inner, inner)
   love.graphics.rectangle('line', self.x - outer / 2, self.y - outer / 2, outer, outer)
   love.graphics.setColor(colors.normal.default)

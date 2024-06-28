@@ -8,16 +8,16 @@ local InfoText = require('src.InfoText')
 local HP = GameObject:extend()
 
 function HP:new(scene)
-  local direction = ({ -1, 1 })[love.math.random(1, 2)]
+  local direction = utils.pickRandom({ -1, 1 })
   local vw, vh = utils.getVirtualWindowDimensions()
-  HP.super.new(self, vw / 2 + direction * (vw / 2 + 48), love.math.random(48, vh - 48))
+  HP.super.new(self, vw / 2 + direction * (vw / 2 + 48), utils.random(48, vh - 48))
 
   self.area = scene.area
   self.width, self.height = 12, 12
   self.collider = self.area.world:newCircleCollider(self.x, self.y, self.width)
   self.collider:setObject(self)
   self.collider:setFixedRotation(true)
-  self.linearVelocity = -direction * love.math.random(20, 40)
+  self.linearVelocity = -direction * utils.random(20, 40)
   self.collider:setLinearVelocity(self.linearVelocity, 0)
   self.collider:setCollisionClass('Collectable')
 end
@@ -43,8 +43,8 @@ function HP:die()
 
   self.area:insert(
     InfoText(
-      self.x + love.math.random(-self.width, self.width),
-      self.y + love.math.random(-self.height, self.height),
+      self.x + utils.random(-self.width, self.width),
+      self.y + utils.random(-self.height, self.height),
       '+HP',
       colors.normal.hp
     )

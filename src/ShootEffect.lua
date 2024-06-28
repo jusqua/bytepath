@@ -1,4 +1,5 @@
 local GameObject = require('src.GameObject')
+local utils = require('src.utils')
 
 local ShootEffect = GameObject:extend()
 
@@ -31,9 +32,7 @@ end
 function ShootEffect:draw()
   love.graphics.push()
   if self.entity then
-    love.graphics.translate(self.x, self.y)
-    love.graphics.rotate(self.entity.angle + math.pi / 4)
-    love.graphics.translate(-self.x, -self.y)
+    utils.rotateAtPosition(self.x, self.y, self.entity.angle + math.pi / 4)
   end
   love.graphics.rectangle('fill', self.x - self.side / 2, self.y - self.side / 2, self.side, self.side)
   love.graphics.pop()

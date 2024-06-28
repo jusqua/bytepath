@@ -1,5 +1,6 @@
 local GameObject = require('src.GameObject')
 local colors = require('src.constants.colors')
+local utils = require('src.utils')
 
 local AmmoEffect = GameObject:extend()
 
@@ -18,9 +19,7 @@ end
 
 function AmmoEffect:draw()
   love.graphics.push()
-  love.graphics.translate(self.x, self.y)
-  love.graphics.rotate(math.pi / 4)
-  love.graphics.translate(-self.x, -self.y)
+  utils.rotateAtPosition(self.x, self.y, math.pi / 4)
   love.graphics.setColor(self.color)
   love.graphics.rectangle('fill', self.x - self.width / 2, self.y - self.height / 2, self.width, self.height)
   love.graphics.setColor(colors.normal.default)

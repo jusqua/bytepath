@@ -2,6 +2,7 @@ local utf8 = require('lib.utf8')
 local GameObject = require('src.GameObject')
 local colors = require('src.constants.colors')
 local fonts = require('src.constants.fonts')
+local utils = require('src.utils')
 
 local InfoText = GameObject:extend()
 
@@ -25,19 +26,19 @@ function InfoText:new(x, y, text, color)
     self.timer:every(0.035, function()
       local random_characters = '0123456789!@#$%¨&*()-=+[]^~/;?><.,|ABCDEFGHIJKLMNOPQRSTUVWYXZ'
       for i = 1, #self.characters do
-        if love.math.random(100) <= 20 then
+        if love.math.random() <= 0.2 then
           local r = love.math.random(#random_characters)
           self.characters[i] = utf8.sub(random_characters, r, r)
         end
 
-        if love.math.random(100) <= 30 then
-          self.bg_colors[i] = colors.all[love.math.random(#colors.all)]
+        if love.math.random() <= 0.3 then
+          self.bg_colors[i] = utils.pickRandom(colors.all)
         else
           self.bg_colors[i] = nil
         end
 
-        if love.math.random(100) <= 5 then
-          self.fg_colors[i] = colors.all[love.math.random(#colors.all)]
+        if love.math.random() <= 0.05 then
+          self.fg_colors[i] = utils.pickRandom(colors.all)
         else
           self.fg_colors[i] = nil
         end

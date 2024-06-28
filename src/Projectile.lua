@@ -3,6 +3,7 @@ local push = require('lib.push.push')
 local colors = require('src.constants.colors')
 local GameObject = require('src.GameObject')
 local ProjectileDeathEffect = require('src.ProjectileDeathEffect')
+local utils = require('src.utils')
 
 local Projectile = GameObject:extend()
 
@@ -45,9 +46,7 @@ end
 
 function Projectile:draw()
   love.graphics.push()
-  love.graphics.translate(self.x, self.y)
-  love.graphics.rotate(vector(self.collider:getLinearVelocity()):angleTo())
-  love.graphics.translate(-self.x, -self.y)
+  utils.rotateAtPosition(self.x, self.y, vector(self.collider:getLinearVelocity()):angleTo())
   love.graphics.setLineWidth(self.radius * 0.75)
   love.graphics.setColor(self.color)
   love.graphics.line(self.x - 2 * self.radius, self.y, self.x, self.y)

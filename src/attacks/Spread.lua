@@ -13,7 +13,7 @@ function Spread:new(player)
   self.color = colors.normal.default
 
   player.timer:every(0.2, function()
-    self.color = colors.all[love.math.random(#colors.all)]
+    self.color = utils.pickRandom(colors.all)
   end)
 end
 
