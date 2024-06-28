@@ -16,11 +16,10 @@ function SP:new(scene)
   self.width, self.height = 12, 12
   self.collider = self.area.world:newRectangleCollider(self.x, self.y, self.width, self.height)
   self.collider:setObject(self)
-  self.collider:setFixedRotation(false)
-  self.angle = love.math.random(0, math.pi * 2)
+  self.collider:setFixedRotation(true)
+  self.collider:setAngle(math.pi / 4)
   self.linearVelocity = -direction * love.math.random(20, 40)
   self.collider:setLinearVelocity(self.linearVelocity, 0)
-  self.collider:applyAngularImpulse(love.math.random(-24, 24))
   self.collider:setCollisionClass('Collectable')
 end
 
