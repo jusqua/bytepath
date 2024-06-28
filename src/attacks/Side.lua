@@ -2,9 +2,9 @@ local Object = require('lib.classic.classic')
 local Projectile = require('src.Projectile')
 local colors = require('src.constants.colors')
 
-local Triple = Object:extend()
+local Side = Object:extend()
 
-function Triple:new(player)
+function Side:new(player)
   self.cooldown = 0.32
   self.cost = 2
   self.abbreviation = 'Si'
@@ -12,7 +12,7 @@ function Triple:new(player)
   self.color = colors.normal.boost
 end
 
-function Triple:projectiles()
+function Side:projectiles()
   local projectiles = {}
   local player = self.player
   local d = player.width * 1.8
@@ -46,4 +46,4 @@ function Triple:projectiles()
   return projectiles
 end
 
-return Triple
+return Side

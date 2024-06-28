@@ -9,6 +9,7 @@ function Triple:new(player)
   self.cost = 3
   self.abbreviation = '3'
   self.player = player
+  self.color = colors.normal.boost
 end
 
 function Triple:projectiles()
@@ -16,7 +17,7 @@ function Triple:projectiles()
   local player = self.player
   local d = player.width * 1.8
   local offset = math.pi / 12
-  local color = colors.normal.boost
+  local color = self.color
   local angle = player.angle
   local area = player.area
   local x, y = player.x, player.y
