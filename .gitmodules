@@ -17,3 +17,6 @@
 [submodule "lib/windfield"]
 	path = lib/windfield
 	url = https://github.com/idbrii/love-windfield.git
+[submodule "lib/utf8"]
+	path = lib/utf8
+	url = https://gist.github.com/9d1f7463c207b7b6c7d28aefec7f5c2d.git
