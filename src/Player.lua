@@ -12,6 +12,7 @@ local Boost = require('src.Boost')
 local HP = require('src.HP')
 local SP = require('src.SP')
 local attacks = require('src.attacks')
+local Attack = require('src.Attack')
 
 local Player = GameObject:extend()
 
@@ -22,7 +23,7 @@ function Player:new(x, y, engine, area)
   self.area = area
 
   self:attach(ships[1](self))
-  self:changeAttackType('Double')
+  self:changeAttackType('Side')
   self.shoot_timer = 0
 
   self.angle = -math.pi / 2
@@ -129,6 +130,8 @@ function Player:update(dt)
       self:changeHPBy(25)
     elseif object:is(SP) then
       self.engine:changeSPBy(1)
+    elseif object:is(Attack) then
+      self:changeAttackType(object.attack)
     end
     object:die()
   end
