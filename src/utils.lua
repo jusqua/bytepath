@@ -72,6 +72,19 @@ local function pickRandom(t)
   return t[love.math.random(1, #t)]
 end
 
+local function rotateAtPosition(x, y, angle)
+  love.graphics.translate(x, y)
+  love.graphics.rotate(angle)
+  love.graphics.translate(-x, -y)
+end
+
+local function rotateAtPositionAndScale(x, y, angle, sx, sy)
+  love.graphics.translate(x, y)
+  love.graphics.rotate(angle)
+  love.graphics.scale(sx, sy or sx)
+  love.graphics.translate(-x, -y)
+end
+
 return {
   shakeCamera = shakeCamera,
   getWindowDimensions = getWindowDimensions,
@@ -81,4 +94,6 @@ return {
   createNegativeColor = createNegativeColor,
   random = random,
   pickRandom = pickRandom,
+  rotateAtPosition = rotateAtPosition,
+  rotateAtPositionAndScale = rotateAtPositionAndScale,
 }
