@@ -3,13 +3,13 @@ local colors = require('src.constants.colors')
 
 local BoostEffect = GameObject:extend()
 
-function BoostEffect:new(x, y)
+function BoostEffect:new(x, y, color)
   BoostEffect.super.new(self, x, y)
 
   self.width, self.height = 12, 12
   self.color = colors.normal.default
   self.timer:after(0.2, function()
-    self.color = colors.normal.boost
+    self.color = color or colors.normal.boost
     self.timer:after(0.35, function()
       self:die()
     end)

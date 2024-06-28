@@ -7,6 +7,7 @@ local Ammo = require('src.Ammo')
 local utils = require('src.utils')
 local Boost = require('src.Boost')
 local HP = require('src.HP')
+local SP = require('src.SP')
 
 local Scene = GameObject:extend()
 
@@ -41,6 +42,9 @@ function Scene:update(dt)
   end
   if select(1, Input.pressed('i')) then
     self.area:insert(HP(self))
+  end
+  if select(1, Input.pressed('u')) then
+    self.area:insert(SP(self))
   end
 
   if self.player and not self.player.alive then

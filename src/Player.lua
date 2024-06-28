@@ -11,6 +11,7 @@ local ships = require('src.ships')
 local Ammo = require('src.Ammo')
 local Boost = require('src.Boost')
 local HP = require('src.HP')
+local SP = require('src.SP')
 
 local Player = GameObject:extend()
 
@@ -122,6 +123,8 @@ function Player:update(dt)
       self:changeBoostBy(25)
     elseif object:is(HP) then
       self:changeHPBy(25)
+    elseif object:is(SP) then
+      self.engine:changeSPBy(1)
     end
     object:die()
   end

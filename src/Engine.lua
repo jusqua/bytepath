@@ -11,6 +11,7 @@ function Engine:new()
 
   self.slow_factor = 1
   self.flash_frames = 0
+  self.sp = 0
 
   self.scene = Scene(self)
   self.camera = Camera()
@@ -61,6 +62,10 @@ function Engine:attach(scene)
   end
 
   self.scene = scene
+end
+
+function Engine:changeSPBy(amount)
+  self.sp = math.max(0, self.sp + amount)
 end
 
 return Engine
