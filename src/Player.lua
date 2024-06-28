@@ -11,7 +11,7 @@ local Ammo = require('src.Ammo')
 local Boost = require('src.Boost')
 local HP = require('src.HP')
 local SP = require('src.SP')
-local attacks = require('src.constants.attacks')
+local attacks = require('src.attacks')
 
 local Player = GameObject:extend()
 
@@ -22,7 +22,7 @@ function Player:new(x, y, engine, area)
   self.area = area
 
   self:attach(ships[1](self))
-  self:changeAttackType('double')
+  self:changeAttackType('Double')
   self.shoot_timer = 0
 
   self.angle = -math.pi / 2
@@ -162,13 +162,13 @@ end
 function Player:shoot()
   self.area:insert(ShootEffect(self.x, self.y, self))
 
-  self:changeAmmoBy(-attacks[self.attack].cost)
+  self:changeAmmoBy(-self.attack.cost)
 
   if self.ammo <= 0 then
-    self:changeAttackType('neutral')
+    self:changeAttackType('Neutral')
   end
 
-  for _, projectile in ipairs(attacks[self.attack].projectiles(self)) do
+  for _, projectile in ipairs(self.attack:projectiles()) do
     self.area:insert(projectile)
   end
 end
@@ -200,8 +200,8 @@ function Player:changeBoostBy(amount)
 end
 
 function Player:changeAttackType(attack)
-  self.attack = attack
-  self.shoot_cooldown = attacks[attack].cooldown
+  self.attack = attacks[attack](self)
+  self.shoot_cooldown = self.attack.cooldown
   self.ammo = self.maxAmmo
 end
 
