@@ -2,7 +2,6 @@ local Input = require('lib.input.input')
 local Moses = require('lib.moses.moses')
 local GameObject = require('src.GameObject')
 local ShootEffect = require('src.ShootEffect')
-local Projectile = require('src.Projectile')
 local ExplodeParticle = require('src.ExplodeParticle')
 local utils = require('src.utils')
 local TickEffect = require('src.TickEffect')
@@ -23,7 +22,7 @@ function Player:new(x, y, engine, area)
   self.area = area
 
   self:attach(ships[1](self))
-  self:changeAttackType('neutral')
+  self:changeAttackType('double')
   self.shoot_timer = 0
 
   self.angle = -math.pi / 2
@@ -162,7 +161,13 @@ end
 
 function Player:shoot()
   self.area:insert(ShootEffect(self.x, self.y, self))
+
   self:changeAmmoBy(-attacks[self.attack].cost)
+
+  if self.ammo <= 0 then
+    self:changeAttackType('neutral')
+  end
+
   for _, projectile in ipairs(attacks[self.attack].projectiles(self)) do
     self.area:insert(projectile)
   end
