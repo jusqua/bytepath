@@ -26,6 +26,7 @@ function Projectile:new(x, y, attributes)
     self.linearVelocity * math.cos(self.angle),
     self.linearVelocity * math.sin(self.angle)
   )
+  self.collider:setCollisionClass('Projectile')
 end
 
 function Projectile:update(dt)
