@@ -1,4 +1,6 @@
+local vector = require('lib.hump.vector')
 local push = require('lib.push.push')
+local colors = require('src.constants.colors')
 local GameObject = require('src.GameObject')
 local ProjectileDeathEffect = require('src.ProjectileDeathEffect')
 
@@ -16,6 +18,7 @@ function Projectile:new(x, y, attributes)
   self.radius = self.radius or 2.5
   self.linearVelocity = self.linearVelocity or 200
   self.angle = self.angle
+  self.color = attributes.color or colors.normal.default
 
   self.collider = self.area.world:newCircleCollider(self.x, self.y, self.radius)
   self.collider:setObject(self)
@@ -40,7 +43,17 @@ function Projectile:update(dt)
 end
 
 function Projectile:draw()
-  love.graphics.circle('fill', self.x, self.y, self.radius)
+  love.graphics.push()
+  love.graphics.translate(self.x, self.y)
+  love.graphics.rotate(vector(self.collider:getLinearVelocity()):angleTo())
+  love.graphics.translate(-self.x, -self.y)
+  love.graphics.setLineWidth(self.radius * 0.75)
+  love.graphics.setColor(self.color)
+  love.graphics.line(self.x - 2 * self.radius, self.y, self.x, self.y)
+  love.graphics.setColor(colors.normal.default)
+  love.graphics.line(self.x, self.y, self.x + 2 * self.radius, self.y)
+  love.graphics.setLineWidth(1)
+  love.graphics.pop()
 end
 
 function Projectile:destroy()

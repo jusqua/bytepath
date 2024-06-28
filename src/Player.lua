@@ -12,6 +12,7 @@ local Ammo = require('src.Ammo')
 local Boost = require('src.Boost')
 local HP = require('src.HP')
 local SP = require('src.SP')
+local attacks = require('src.constants.attacks')
 
 local Player = GameObject:extend()
 
@@ -22,6 +23,8 @@ function Player:new(x, y, engine, area)
   self.area = area
 
   self:attach(ships[1](self))
+  self:changeAttackType('neutral')
+  self.shoot_timer = 0
 
   self.angle = -math.pi / 2
   self.angularVelocity = 1.66 * math.pi
@@ -42,10 +45,6 @@ function Player:new(x, y, engine, area)
   self.can_boost = true
   self.boost_timer = 0
   self.boost_cooldown = 2
-
-  self.timer:every(0.24, function()
-    self:shoot()
-  end)
 
   self.timer:every(5, function()
     self:tick()
@@ -68,6 +67,12 @@ function Player:update(dt)
   end
   if select(1, Input.down('right')) then
     self.angle = self.angle + self.angularVelocity * dt
+  end
+
+  self.shoot_timer = self.shoot_timer + dt
+  if self.shoot_timer >= self.shoot_cooldown then
+    self.shoot_timer = self.shoot_timer - self.shoot_cooldown
+    self:shoot()
   end
 
   self:changeBoostBy(10 * dt)
@@ -155,29 +160,11 @@ function Player:draw()
   love.graphics.pop()
 end
 
-function Player:shoot(amount, offset, theta, attributes)
+function Player:shoot()
   self.area:insert(ShootEffect(self.x, self.y, self))
-
-  amount = amount or 1
-  offset = offset or 0
-  theta = theta or 0
-  attributes = attributes or {}
-
-  self:changeAmmoBy(-amount)
-
-  local angle = self.angle + theta * (amount - 1) / 2
-  local delta = offset * (amount - 1) / 2
-  for i = 1, amount do
-    local attr = Moses.clone(attributes)
-    attr.area = self.area
-    attr.angle = angle - (i - 1) * theta
-
-    local d = self.height * 1.5
-    local doff = delta * (i - 1 - (amount - 1) / 2)
-    local x = self.x + d * math.cos(self.angle) + doff * math.cos(self.angle - math.pi / 2)
-    local y = self.y + d * math.sin(self.angle) + doff * math.sin(self.angle - math.pi / 2)
-
-    self.area:insert(Projectile(x, y, attr))
+  self:changeAmmoBy(-attacks[self.attack].cost)
+  for _, projectile in ipairs(attacks[self.attack].projectiles(self)) do
+    self.area:insert(projectile)
   end
 end
 
@@ -205,6 +192,12 @@ end
 
 function Player:changeBoostBy(amount)
   self.boost = math.max(0, math.min(self.boost + amount, self.maxBoost))
+end
+
+function Player:changeAttackType(attack)
+  self.attack = attack
+  self.shoot_cooldown = attacks[attack].cooldown
+  self.ammo = self.maxAmmo
 end
 
 function Player:attach(ship)
