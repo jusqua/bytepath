@@ -5,4 +5,5 @@ return {
   Rapid = require('src.attacks.Rapid'),
   Spread = require('src.attacks.Spread'),
   Back = require('src.attacks.Back'),
+  Side = require('src.attacks.Side'),
 }
