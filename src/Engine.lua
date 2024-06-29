@@ -10,6 +10,7 @@ function Engine:new()
   Engine.super.new(self)
 
   self.slow_factor = 1
+  self.slow_handler = nil
   self.flash_frames = 0
   self.sp = 0
 
@@ -49,7 +50,13 @@ end
 
 function Engine:slowdown(factor, duration)
   self.slow_factor = factor
-  self.timer:tween(duration, self, { slow_factor = 1 }, 'in-out-cubic')
+
+  if self.slow_handler then
+    self.timer:cancel(self.slow_handler)
+    self.slow_handler = nil
+  end
+
+  self.slow_handler = self.timer:tween(duration, self, { slow_factor = 1 }, 'in-out-cubic')
 end
 
 function Engine:flash(frames)
