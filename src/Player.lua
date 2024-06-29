@@ -23,8 +23,14 @@ function Player:new(x, y, engine, area)
   self.area = area
 
   self:attach(ships[1](self))
-  self:changeAttackType('Side')
+  self:changeAttackType('Neutral')
   self.shoot_timer = 0
+
+  self.invencible = false
+  self.invencible_cooldown = 2
+  self.invencible_timer = self.invencible_cooldown
+
+  self.flicker = false
 
   self.angle = -math.pi / 2
   self.angularVelocity = 1.66 * math.pi
@@ -134,6 +140,14 @@ function Player:update(dt)
       self:changeAttackType(object.attack)
     end
     object:die()
+  elseif self.collider:enter('Enemy') then
+    self:hit(30)
+  end
+
+  self.invencible_timer = self.invencible_timer + dt
+  if self.invencible_timer >= self.invencible_cooldown then
+    self.invencible_timer = self.invencible_timer - self.invencible_cooldown
+    self.invencible = false
   end
 
   if self.x < 0 or self.y < 0 or self.x > virtualWidth or self.y > virtualHeight then
@@ -142,6 +156,10 @@ function Player:update(dt)
 end
 
 function Player:draw()
+  if self.flicker then
+    return
+  end
+
   love.graphics.push()
   utils.rotateAtPosition(self.x, self.y, self.angle)
 
@@ -216,6 +234,46 @@ function Player:attach(ship)
   self.collider = self.area.world:newCircleCollider(self.x, self.y, self.ship.width)
   self.collider:setObject(self)
   self.collider:setCollisionClass('Player')
+end
+
+function Player:hit(damage)
+  if self.invencible then
+    return
+  end
+
+  damage = damage or 10
+  self:changeHPBy(-damage)
+
+  if self.hp <= 0 then
+    self:die()
+    return
+  end
+
+  if damage >= 30 then
+    self.invencible_timer = 0
+    self.invencible = true
+    local flicking_time = self.invencible_cooldown / 50
+    self.timer:after(flicking_time, function(f)
+      if self.invencible then
+        self.flicker = not self.flicker
+        self.timer:after(flicking_time, f)
+      else
+        self.flicker = false
+      end
+    end)
+
+    self.engine:shake(6, 60, 0.2)
+    self.engine:slowdown(0.25, 0.5)
+    self.engine:flash(3)
+  else
+    self.engine:shake(6, 60, 0.1)
+    self.engine:slowdown(0.75, 0.25)
+    self.engine:flash(2)
+  end
+
+  for _ = 1, love.math.random(4, 8) do
+    self.area:insert(ExplodeParticle(self.x, self.y))
+  end
 end
 
 return Player
