@@ -1,5 +1,10 @@
 local push = require('lib.push.push')
 
+local function random(min, max)
+  min, max = min or 0, max or 1
+  return (min > max and (love.math.random() * (min - max) + max)) or (love.math.random() * (max - min) + min)
+end
+
 -- based on https://jonny.morrill.me/en/blog/gamedev-how-to-implement-a-camera-shake-effect
 
 -- auxiliary function for shake
@@ -7,7 +12,7 @@ local function getShakeOffsets(amplitude, frequency, duration, pnoise, t)
   local s = t / 1000 * frequency
   local s0 = math.floor(s)
   local k = math.max(0, (duration - t) / duration)
-  local noise = love.math.random(-1, 1)
+  local noise = random(-1, 1)
   local d = k * amplitude * (pnoise + (s - s0) * (noise - pnoise))
 
   return noise, d
@@ -18,7 +23,7 @@ local function shakeCamera(camera, timer, amplitude, frequency, duration)
   -- x axis
   do
     local t, d = 0, 0
-    local pnoise = love.math.random(-1, 1)
+    local pnoise = random(-1, 1)
     local start_time = love.timer.getTime() * 1000
     timer:during(duration, function(dt)
       t = (love.timer.getTime() * 1000 - start_time) * dt
@@ -30,7 +35,7 @@ local function shakeCamera(camera, timer, amplitude, frequency, duration)
   -- y axis
   do
     local t, d = 0, 0
-    local pnoise = love.math.random(-1, 1)
+    local pnoise = random(-1, 1)
     local start_time = love.timer.getTime() * 1000
     timer:during(duration, function(dt)
       t = (love.timer.getTime() * 1000 - start_time) * dt
@@ -61,11 +66,6 @@ end
 local function createNegativeColor(color)
   local r, g, b = unpack(color)
   return { 1 - r, 1 - g, 1 - b }
-end
-
-local function random(min, max)
-  min, max = min or 0, max or 1
-  return (min > max and (love.math.random() * (min - max) + max)) or (love.math.random() * (max - min) + min)
 end
 
 local function pickRandom(t)
