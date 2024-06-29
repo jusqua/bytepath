@@ -7,7 +7,7 @@ function EnemyDeathEffect:new(x, y, width, height)
   EnemyDeathEffect.super.new(self, x, y)
 
   self.width = width
-  self.height = height
+  self.height = height or width
 
   self.first = true
   self.timer:after(0.1, function()
@@ -24,7 +24,8 @@ function EnemyDeathEffect:draw()
   if self.second then
     love.graphics.setColor(colors.normal.hp)
   end
-  love.graphics.rectangle('fill', self.x - self.width / 2, self.y - self.height / 2, self.width, self.height)
+  local w, h = self.width * 2, self.height * 2
+  love.graphics.rectangle('fill', self.x - w / 2, self.y - h / 2, w, h)
   love.graphics.setColor(colors.normal.default)
 end
 
