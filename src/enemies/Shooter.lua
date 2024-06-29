@@ -1,6 +1,7 @@
 local utils = require('src.utils')
 local GameObject = require('src.GameObject')
 local colors = require('src.constants.colors')
+local EnemyProjectile = require('src.EnemyProjectile')
 local EnemyDeathEffect = require('src.EnemyDeathEffect')
 local PreAttackEffect = require('src.PreAttackEffect')
 
@@ -37,7 +38,14 @@ function Shooter:new(scene)
         { entity = self, color = colors.normal.hp, duration = 1, area = self.area }
       )
     )
-    self.timer:after(1, function() end)
+    self.timer:after(1, function()
+      self.area:insert(EnemyProjectile(self.x + d * math.cos(angle), self.y + d * math.sin(angle), {
+        area = self.area,
+        angle = math.atan2(scene.player.y - self.y, scene.player.x - self.x),
+        linearVelocity = utils.random(80, 100),
+        radius = 3.5,
+      }))
+    end)
   end)
 end
 

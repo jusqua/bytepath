@@ -43,6 +43,14 @@ function EnemyProjectile:update(dt)
     local collisionData = self.collider:getEnterCollisionData('Player')
     local object = collisionData.collider:getObject()
     object:hit(self.damage)
+    self:die()
+  end
+
+  if self.collider:enter('Projectile') then
+    local collisionData = self.collider:getEnterCollisionData('Projectile')
+    local object = collisionData.collider:getObject()
+    object:die()
+    self:die()
   end
 
   local ww, wh = push.toGame(love.window.getMode())
@@ -60,10 +68,6 @@ function EnemyProjectile:draw()
   love.graphics.setColor(colors.normal.default)
   love.graphics.setLineWidth(1)
   love.graphics.pop()
-end
-
-function EnemyProjectile:destroy()
-  EnemyProjectile.super.destroy(self)
 end
 
 function EnemyProjectile:die()
