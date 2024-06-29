@@ -85,6 +85,21 @@ local function rotateAtPositionAndScale(x, y, angle, sx, sy)
   love.graphics.translate(-x, -y)
 end
 
+local function generateIrregularPolygon(size, amount)
+  amount = amount or 8
+
+  local points = {}
+  for i = 1, amount do
+    local angle_interval = 2 * math.pi / amount
+    local distance = size + random(-size / 4, size / 4)
+    local angle = (i - 1) * angle_interval + random(-angle_interval / 4, angle_interval / 4)
+    table.insert(points, distance * math.cos(angle))
+    table.insert(points, distance * math.sin(angle))
+  end
+
+  return points
+end
+
 return {
   shakeCamera = shakeCamera,
   getWindowDimensions = getWindowDimensions,
@@ -96,4 +111,5 @@ return {
   pickRandom = pickRandom,
   rotateAtPosition = rotateAtPosition,
   rotateAtPositionAndScale = rotateAtPositionAndScale,
+  generateIrregularPolygon = generateIrregularPolygon,
 }
