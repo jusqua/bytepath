@@ -2,6 +2,7 @@ local utils = require('src.utils')
 local GameObject = require('src.GameObject')
 local colors = require('src.constants.colors')
 local EnemyDeathEffect = require('src.EnemyDeathEffect')
+local PreAttackEffect = require('src.PreAttackEffect')
 
 local Shooter = GameObject:extend()
 
@@ -20,11 +21,24 @@ function Shooter:new(scene)
   self.collider:setObject(self)
   self.collider:setCollisionClass('Enemy')
   self.collider:setFixedRotation(false)
-  self.collider:setAngle(direction == 1 and math.pi or 0)
+  local angle = direction == 1 and math.pi or 0
+  self.collider:setAngle(angle)
   self.collider:setFixedRotation(true)
   self.linearVelocity = -direction * utils.random(20, 40)
   self.collider:setLinearVelocity(self.linearVelocity, 0)
   self.collider:applyAngularImpulse(utils.random(-100, 100))
+
+  local d = 1.4 * w
+  self.timer:every(utils.random(3, 5), function()
+    self.area:insert(
+      PreAttackEffect(
+        self.x + d * math.cos(angle),
+        self.y + d * math.sin(angle),
+        { entity = self, color = colors.normal.hp, duration = 1, area = self.area }
+      )
+    )
+    self.timer:after(1, function() end)
+  end)
 end
 
 function Shooter:update(dt)
