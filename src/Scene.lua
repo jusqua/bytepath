@@ -9,6 +9,7 @@ local Boost = require('src.Boost')
 local HP = require('src.HP')
 local SP = require('src.SP')
 local Attack = require('src.Attack')
+local Rock = require('src.enemies.Rock')
 
 local Scene = GameObject:extend()
 
@@ -21,6 +22,7 @@ function Scene:new(engine)
   self.area.world:addCollisionClass('Player')
   self.area.world:addCollisionClass('Projectile', { ignores = { 'Projectile', 'Player' } })
   self.area.world:addCollisionClass('Collectable', { ignores = { 'Collectable', 'Projectile' } })
+  self.area.world:addCollisionClass('Enemy', { ignores = { 'Enemy', 'Collectable' } })
 
   local wwidth, wheight, _ = love.window.getMode()
   local vx, vy = push.toGame(wwidth / 2, wheight / 2)
@@ -49,6 +51,9 @@ function Scene:update(dt)
   end
   if select(1, Input.pressed('y')) then
     self.area:insert(Attack(self))
+  end
+  if select(1, Input.pressed('0')) then
+    self.area:insert(Rock(self))
   end
 
   if self.player and not self.player.alive then
