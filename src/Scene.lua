@@ -23,6 +23,7 @@ function Scene:new(engine)
   self.area.world:addCollisionClass('Projectile', { ignores = { 'Projectile', 'Player' } })
   self.area.world:addCollisionClass('Collectable', { ignores = { 'Collectable', 'Projectile' } })
   self.area.world:addCollisionClass('Enemy', { ignores = { 'Enemy', 'Collectable' } })
+  self.area.world:addCollisionClass('EnemyProjectile', { ignores = { 'Enemy', 'Collectable', 'EnemyProjectile' } })
 
   local wwidth, wheight, _ = love.window.getMode()
   local vx, vy = push.toGame(wwidth / 2, wheight / 2)
