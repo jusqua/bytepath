@@ -10,6 +10,7 @@ local HP = require('src.HP')
 local SP = require('src.SP')
 local Attack = require('src.Attack')
 local Rock = require('src.enemies.Rock')
+local Shooter = require('src.enemies.Shooter')
 
 local Scene = GameObject:extend()
 
@@ -55,6 +56,9 @@ function Scene:update(dt)
   end
   if select(1, Input.pressed('0')) then
     self.area:insert(Rock(self))
+  end
+  if select(1, Input.pressed('9')) then
+    self.area:insert(Shooter(self))
   end
 
   if self.player and not self.player.alive then
