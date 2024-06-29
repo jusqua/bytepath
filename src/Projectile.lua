@@ -16,6 +16,7 @@ function Projectile:new(x, y, attributes)
     end
   end
 
+  self.damage = 100
   self.radius = self.radius or 2.5
   self.linearVelocity = self.linearVelocity or 200
   self.angle = self.angle
@@ -37,6 +38,12 @@ function Projectile:update(dt)
     self.linearVelocity * math.cos(self.angle),
     self.linearVelocity * math.sin(self.angle)
   )
+
+  if self.collider:enter('Enemy') then
+    local collisionData = self.collider:getEnterCollisionData('Enemy')
+    local object = collisionData.collider:getObject()
+    object:hit(self.damage)
+  end
 
   local ww, wh = push.toGame(love.window.getMode())
   if self.x < 0 or self.y < 0 or self.x > ww or self.y > wh then
