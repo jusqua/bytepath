@@ -1,6 +1,7 @@
 local GameObject = require('src.GameObject')
 local utils = require('src.utils')
 local enemies = require('src.enemies')
+local resources = require('src.resources')
 
 local Director = GameObject:extend()
 
@@ -38,6 +39,18 @@ function Director:new(scene)
     )
   end
   self:setEnemySpawns()
+
+  self.resources_spawn_chances = utils.chanceList({ 'Boost', 28 }, { 'HealthPoint', 14 }, { 'SkillPoint', 58 })
+  self.resources_spawn_time = 16
+  self.timer:after(self.resources_spawn_time, function()
+    local resource = self.resources_spawn_chances:next()
+    self.scene.area:insert(resources[resource](self.scene))
+  end)
+
+  self.attack_spawn_rate = 30
+  self.timer:after(self.attack_spawn_rate, function()
+    self.scene.area:insert(resources.Attack(self.scene))
+  end)
 end
 
 function Director:update(dt)
@@ -74,16 +87,6 @@ function Director:setEnemySpawns()
       self.scene.area:insert(enemies[enemy_list[i]])
     end)
   end
-end
-
-function Director:draw() end
-
-function Director:destroy()
-  Director.super.destroy(self)
-end
-
-function Director:die()
-  Director.super.die(self)
 end
 
 return Director
