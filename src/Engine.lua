@@ -71,7 +71,7 @@ function Engine:attach(scene)
   self.scene = scene
 end
 
-function Engine:changeSkillPointBy(amount)
+function Engine:changeSkillPointsBy(amount)
   self.skill_point = math.max(0, self.skill_point + amount)
 end
 
