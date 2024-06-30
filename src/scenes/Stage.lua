@@ -30,6 +30,7 @@ end
 function Stage:update(dt)
   Stage.super.update(self, dt)
 
+  self.director:update(dt)
   self.area:update(dt)
 
   if self.player and not self.player.alive then

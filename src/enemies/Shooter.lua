@@ -15,6 +15,7 @@ function Shooter:new(scene)
   self.hp = 100
   self.hit_flash = false
   self.area = scene.area
+  self.scene = scene
   self.score_given = 150
   local w, h = 12, 6
   self.width, self.height = w, h

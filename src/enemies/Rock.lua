@@ -13,6 +13,7 @@ function Rock:new(scene)
   self.hp = 100
   self.hit_flash = false
   self.area = scene.area
+  self.scene = scene
   self.size = 8
   self.score_given = 100
   self.collider = self.area.world:newPolygonCollider(utils.generateIrregularPolygon(self.size))

@@ -93,7 +93,7 @@ function Director:setEnemySpawns()
 
   for i = 1, #enemy_spawn_times do
     self.timer:after(enemy_spawn_times[i], function()
-      self.scene.area:insert(enemies[enemy_list[i]])
+      self.scene.area:insert(enemies[enemy_list[i]](self.scene))
     end)
   end
 end
