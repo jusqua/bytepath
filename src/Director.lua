@@ -57,7 +57,7 @@ function Director:update(dt)
   Director.super.update(self, dt)
 
   self.round_timer = self.round_timer + dt
-  if self.round_timer == self.round_duration then
+  if self.round_timer >= self.round_duration then
     self.round_timer = self.round_timer - self.round_duration
     self.round = self.round + 1
     self:setEnemySpawns()
