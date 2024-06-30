@@ -211,7 +211,7 @@ function Player:changeAmmoBy(amount)
 end
 
 function Player:changeHealthPointsBy(amount)
-  self.health_point = math.max(0, math.min(self.hp + amount, self.max_health_point))
+  self.health_point = math.max(0, math.min(self.health_point + amount, self.max_health_point))
 end
 
 function Player:changeBoostBy(amount)
@@ -246,7 +246,7 @@ function Player:hit(damage)
   damage = damage or 10
   self:changeHealthPointsBy(-damage)
 
-  if self.hp <= 0 then
+  if self.health_point <= 0 then
     self:die()
     return
   end
