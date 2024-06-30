@@ -6,7 +6,7 @@ local utils = require('src.utils')
 local ResolutionModule = GameObject:extend()
 
 function ResolutionModule:new(console)
-  ResolutionModule.super.new(self, 0, console.line_y)
+  ResolutionModule.super.new(self)
 
   self.console = console
 
@@ -26,7 +26,7 @@ function ResolutionModule:new(console)
     self.selection_widths[i] = self.console.font:getWidth(resolution)
   end
 
-  self.console.timer:after(self.base_delay + self.selection_index * self.base_delay, function()
+  self.console.timer:after(self.base_delay + #self.resolutions * self.base_delay, function()
     self.active = true
   end)
 end
@@ -71,7 +71,7 @@ function ResolutionModule:draw()
   love.graphics.rectangle(
     'fill',
     8 + x_offset - 2,
-    self.y + self.selection_index * 12,
+    self.console.lines[#self.console.lines + self.selection_index - #self.resolutions].y,
     width + 4,
     self.console.font:getHeight()
   )

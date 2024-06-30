@@ -52,7 +52,9 @@ function Console:update(dt)
         input_text = input_text .. character
       end
       self.input_text = {}
-      if modules[input_text] then
+      if input_text == '' then
+        self:addInputLine(0.1)
+      elseif modules[input_text] then
         table.insert(self.modules, modules[input_text](self))
       end
     end
@@ -90,6 +92,7 @@ function Console:addLine(delay, text)
   self.timer:after(delay, function()
     table.insert(self.lines, { x = 8, y = self.line_y, text = love.graphics.newText(self.font, text) })
     self.line_y = self.line_y + 12
+    self:scroll()
   end)
 end
 
@@ -98,6 +101,7 @@ function Console:addInputLine(delay)
     table.insert(self.lines, { x = 8, y = self.line_y, text = love.graphics.newText(self.font, self.base_input_text) })
     self.line_y = self.line_y + 12
     self.inputting = true
+    self:scroll()
   end)
 end
 
@@ -105,6 +109,19 @@ function Console:textinput(t)
   if self.inputting then
     table.insert(self.input_text, t)
     self:updateText()
+  end
+end
+
+function Console:scroll()
+  local _, vh = utils.getVirtualWindowDimensions()
+  local font_height = self.font:getHeight()
+  if self.line_y + font_height > vh then
+    local offset = self.line_y + font_height - vh
+    self.line_y = self.line_y - offset
+    for i = #self.lines, 1, -1 do
+      local line = self.lines[i]
+      self.timer:tween(0.05, line, { y = line.y - offset }, 'linear')
+    end
   end
 end
 
