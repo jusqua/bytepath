@@ -117,6 +117,13 @@ local function chanceList(...)
   }
 end
 
+local function resize(scale)
+  local vw, vh = getVirtualWindowDimensions()
+  local w, h = vw * scale, vh * scale
+  love.window.setMode(w, h)
+  push.resize(w, h)
+end
+
 return {
   shakeCamera = shakeCamera,
   getWindowDimensions = getWindowDimensions,
@@ -130,4 +137,5 @@ return {
   rotateAtPositionAndScale = rotateAtPositionAndScale,
   generateIrregularPolygon = generateIrregularPolygon,
   chanceList = chanceList,
+  resize = resize,
 }
