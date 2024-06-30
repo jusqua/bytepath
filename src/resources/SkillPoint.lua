@@ -2,7 +2,7 @@ local utils = require('src.utils')
 local GameObject = require('src.GameObject')
 local ExplodeParticle = require('src.ExplodeParticle')
 local colors = require('src.constants.colors')
-local BoostEffect = require('src.BoostEffect')
+local BoostEffect = require('src.effects.BoostEffect')
 local InfoText = require('src.InfoText')
 
 local SkillPoint = GameObject:extend()

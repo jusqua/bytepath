@@ -2,7 +2,7 @@ local utils = require('src.utils')
 local GameObject = require('src.GameObject')
 local ExplodeParticle = require('src.ExplodeParticle')
 local colors = require('src.constants.colors')
-local HealthPointEffect = require('src.HealthPointEffect')
+local HealthPointEffect = require('src.effects.HealthPointEffect')
 local InfoText = require('src.InfoText')
 
 local HealthPoint = GameObject:extend()

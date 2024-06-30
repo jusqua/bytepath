@@ -2,8 +2,8 @@ local utils = require('src.utils')
 local GameObject = require('src.GameObject')
 local colors = require('src.constants.colors')
 local EnemyProjectile = require('src.EnemyProjectile')
-local EnemyDeathEffect = require('src.EnemyDeathEffect')
-local PreAttackEffect = require('src.PreAttackEffect')
+local EnemyDeathEffect = require('src.effects.EnemyDeathEffect')
+local PreAttackEffect = require('src.effects.PreAttackEffect')
 
 local Shooter = GameObject:extend()
 

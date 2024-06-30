@@ -1,7 +1,7 @@
 local utils = require('src.utils')
 local GameObject = require('src.GameObject')
 local colors = require('src.constants.colors')
-local EnemyDeathEffect = require('src.EnemyDeathEffect')
+local EnemyDeathEffect = require('src.effects.EnemyDeathEffect')
 
 local Rock = GameObject:extend()
 

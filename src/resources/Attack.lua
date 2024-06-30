@@ -5,7 +5,7 @@ local GameObject = require('src.GameObject')
 local ExplodeParticle = require('src.ExplodeParticle')
 local colors = require('src.constants.colors')
 local fonts = require('src.constants.fonts')
-local AttackEffect = require('src.AttackEffect')
+local AttackEffect = require('src.effects.AttackEffect')
 local InfoText = require('src.InfoText')
 local attacks = require('src.attacks')
 

@@ -2,7 +2,7 @@ local vector = require('lib.hump.vector')
 local GameObject = require('src.GameObject')
 local ExplodeParticle = require('src.ExplodeParticle')
 local colors = require('src.constants.colors')
-local AmmoEffect = require('src.AmmoEffect')
+local AmmoEffect = require('src.effects.AmmoEffect')
 local utils = require('src.utils')
 
 local Ammo = GameObject:extend()

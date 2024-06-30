@@ -2,7 +2,7 @@ local vector = require('lib.hump.vector')
 local push = require('lib.push.push')
 local colors = require('src.constants.colors')
 local GameObject = require('src.GameObject')
-local ProjectileDeathEffect = require('src.ProjectileDeathEffect')
+local ProjectileDeathEffect = require('src.effects.ProjectileDeathEffect')
 local utils = require('src.utils')
 
 local EnemyProjectile = GameObject:extend()
