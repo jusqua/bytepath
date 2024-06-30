@@ -14,6 +14,7 @@ function love.load()
   love.graphics.setDefaultFilter('nearest', 'nearest')
   love.graphics.setLineStyle('rough')
   love.graphics.setColor(colors.normal.default)
+  love.mouse.setVisible(false)
 
   push.setupScreen(virtualWidth, virtualHeight, {
     upscale = 'pixel-perfect',
