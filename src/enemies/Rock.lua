@@ -2,6 +2,7 @@ local utils = require('src.utils')
 local GameObject = require('src.GameObject')
 local colors = require('src.constants.colors')
 local EnemyDeathEffect = require('src.effects.EnemyDeathEffect')
+local resources = require('src.resources')
 
 local Rock = GameObject:extend()
 
@@ -44,6 +45,7 @@ end
 function Rock:die()
   Rock.super.die(self)
   self.area:insert(EnemyDeathEffect(self.x, self.y, self.size))
+  self.area:insert(resources.Ammo(self.x, self.y, self.scene))
   self.scene:changeScoreBy(self.score_given)
 end
 

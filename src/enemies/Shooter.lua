@@ -4,6 +4,7 @@ local colors = require('src.constants.colors')
 local EnemyProjectile = require('src.EnemyProjectile')
 local EnemyDeathEffect = require('src.effects.EnemyDeathEffect')
 local PreAttackEffect = require('src.effects.PreAttackEffect')
+local resources = require('src.resources')
 
 local Shooter = GameObject:extend()
 
@@ -71,6 +72,7 @@ end
 function Shooter:die()
   Shooter.super.die(self)
   self.area:insert(EnemyDeathEffect(self.x, self.y, self.width, self.height))
+  self.area:insert(resources.Ammo(self.x, self.y, self.scene))
   self.scene:changeScoreBy(self.score_given)
 end
 
