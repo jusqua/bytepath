@@ -4,10 +4,10 @@ local Area = require('src.Area')
 local Player = require('src.Player')
 local Director = require('src.Director')
 
-local Scene = GameObject:extend()
+local Stage = GameObject:extend()
 
-function Scene:new(engine)
-  Scene.super.new(self)
+function Stage:new(engine)
+  Stage.super.new(self)
 
   self.engine = engine
   self.area = Area()
@@ -26,8 +26,8 @@ function Scene:new(engine)
   self.area:insert(self.player)
 end
 
-function Scene:update(dt)
-  Scene.super.update(self, dt)
+function Stage:update(dt)
+  Stage.super.update(self, dt)
 
   self.area:update(dt)
 
@@ -36,11 +36,11 @@ function Scene:update(dt)
   end
 end
 
-function Scene:draw()
+function Stage:draw()
   self.area:draw()
 end
 
-function Scene:destroy()
+function Stage:destroy()
   self.area:destroy()
   self.area = nil
   self.player:destroy()
@@ -48,4 +48,4 @@ function Scene:destroy()
   self.engine = nil
 end
 
-return Scene
+return Stage

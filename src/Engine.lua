@@ -1,6 +1,6 @@
 local Camera = require('lib.hump.camera')
 local GameObject = require('src.GameObject')
-local Scene = require('src.Scene')
+local Stage = require('src.scenes.Stage')
 local utils = require('src.utils')
 local colors = require('src.constants.colors')
 
@@ -14,7 +14,7 @@ function Engine:new()
   self.flash_frames = 0
   self.skill_point = 0
 
-  self.scene = Scene(self)
+  self.scene = Stage(self)
   self.camera = Camera()
 end
 
