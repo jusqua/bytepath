@@ -90,19 +90,6 @@ function Stage:draw()
     self.font:getHeight() / 2
   )
 
-  -- skill point counter
-  love.graphics.setColor(colors.normal.skill_point)
-  love.graphics.print(
-    tostring(self.engine.skill_point),
-    20,
-    10,
-    0,
-    1,
-    1,
-    math.floor(self.font:getWidth(tostring(self.engine.skill_point)) / 2),
-    self.font:getHeight() / 2
-  )
-
   -- health point gauge bar
   local r, g, b = unpack(colors.normal.hp)
   local cur, max = self.player and self.player.health_point or 0, self.player_max_health_points
