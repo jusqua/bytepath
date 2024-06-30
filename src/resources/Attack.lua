@@ -33,6 +33,7 @@ function Attack:new(scene)
 
   self.area = scene.area
   self.width, self.height = 12, 12
+  self.score_given = 500
   self.collider = self.area.world:newRectangleCollider(self.x, self.y, self.width, self.height)
   self.collider:setObject(self)
   self.collider:setFixedRotation(true)

@@ -14,6 +14,7 @@ function Rock:new(scene)
   self.hit_flash = false
   self.area = scene.area
   self.size = 8
+  self.score_given = 100
   self.collider = self.area.world:newPolygonCollider(utils.generateIrregularPolygon(self.size))
   self.collider:setPosition(self.x, self.y)
   self.collider:setObject(self)
@@ -42,6 +43,7 @@ end
 function Rock:die()
   Rock.super.die(self)
   self.area:insert(EnemyDeathEffect(self.x, self.y, self.size))
+  self.scene:changeScoreBy(self.score_given)
 end
 
 function Rock:hit(damage)

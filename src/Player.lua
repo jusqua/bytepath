@@ -137,6 +137,7 @@ function Player:update(dt)
     elseif object:is(resources.Attack) then
       self:changeAttackType(object.attack)
     end
+    self.engine.scene:changeScoreBy(object.score_given)
     object:die()
   elseif self.collider:enter('Enemy') then
     self:hit(30)
@@ -206,6 +207,7 @@ end
 
 function Player:changeAmmoBy(amount)
   self.ammo = math.max(0, math.min(self.ammo + amount, self.max_ammo))
+  self.engine.scene:changeScoreBy(50)
 end
 
 function Player:changeHealthPointsBy(amount)
@@ -214,6 +216,7 @@ end
 
 function Player:changeBoostBy(amount)
   self.boost = math.max(0, math.min(self.boost + amount, self.max_boost))
+  self.engine.scene:changeScoreBy(150)
 end
 
 function Player:changeAttackType(attack)

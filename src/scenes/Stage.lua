@@ -11,6 +11,7 @@ function Stage:new(engine)
 
   self.engine = engine
   self.area = Area()
+  self.score = 0
   self.area:generateWorld()
   self.area.world:addCollisionClass('Player')
   self.area.world:addCollisionClass('Projectile', { ignores = { 'Projectile', 'Player' } })
@@ -51,6 +52,10 @@ function Stage:finish()
   self.engine.timer:after(1, function()
     self.engine:attach(Stage(self.engine))
   end)
+end
+
+function Stage:changeScoreBy(amount)
+  self.score = self.score + amount
 end
 
 return Stage

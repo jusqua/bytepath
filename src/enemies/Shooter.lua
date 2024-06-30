@@ -15,6 +15,7 @@ function Shooter:new(scene)
   self.hp = 100
   self.hit_flash = false
   self.area = scene.area
+  self.score_given = 150
   local w, h = 12, 6
   self.width, self.height = w, h
   self.collider = self.area.world:newPolygonCollider({ w, 0, -w / 2, h, -w, 0, -w / 2, -h })
@@ -67,6 +68,7 @@ end
 function Shooter:die()
   Shooter.super.die(self)
   self.area:insert(EnemyDeathEffect(self.x, self.y, self.width, self.height))
+  self.scene:changeScoreBy(self.score_given)
 end
 
 function Shooter:hit(damage)

@@ -13,6 +13,7 @@ function Ammo:new(x, y, scene)
   self.player = scene.player
   self.area = scene.area
   self.width, self.height = 8, 8
+  self.score_given = 50
   self.collider = self.area.world:newRectangleCollider(self.x, self.y, self.width, self.height)
   self.collider:setObject(self)
   self.collider:setFixedRotation(false)

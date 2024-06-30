@@ -14,6 +14,7 @@ function HealthPoint:new(scene)
 
   self.area = scene.area
   self.width, self.height = 12, 12
+  self.score_given = 0
   self.collider = self.area.world:newCircleCollider(self.x, self.y, self.width)
   self.collider:setObject(self)
   self.collider:setFixedRotation(true)
