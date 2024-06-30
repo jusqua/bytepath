@@ -1,8 +1,8 @@
 local Camera = require('lib.hump.camera')
 local GameObject = require('src.GameObject')
-local Stage = require('src.scenes.Stage')
 local utils = require('src.utils')
 local colors = require('src.constants.colors')
+local Console = require('src.scenes.Console')
 
 local Engine = GameObject:extend()
 
@@ -14,8 +14,8 @@ function Engine:new()
   self.flash_frames = 0
   self.skill_point = 0
 
-  self.scene = Stage(self)
   self.camera = Camera()
+  self:attach(Console(self))
 end
 
 function Engine:update(dt)

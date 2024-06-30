@@ -43,3 +43,9 @@ end
 function love.resize(width, height)
   push.resize(width, height)
 end
+
+function love.textinput(t)
+  if engine.scene and engine.scene.textinput then
+    engine.scene:textinput(t)
+  end
+end
