@@ -41,12 +41,14 @@ function Shooter:new(scene)
       )
     )
     self.timer:after(1, function()
-      self.area:insert(EnemyProjectile(self.x + d * math.cos(angle), self.y + d * math.sin(angle), {
-        area = self.area,
-        angle = math.atan2(scene.player.y - self.y, scene.player.x - self.x),
-        linearVelocity = utils.random(80, 100),
-        radius = 3.5,
-      }))
+      if scene.player and scene.player.alive then
+        self.area:insert(EnemyProjectile(self.x + d * math.cos(angle), self.y + d * math.sin(angle), {
+          area = self.area,
+          angle = math.atan2(scene.player.y - self.y, scene.player.x - self.x),
+          linearVelocity = utils.random(80, 100),
+          radius = 3.5,
+        }))
+      end
     end)
   end)
 end
