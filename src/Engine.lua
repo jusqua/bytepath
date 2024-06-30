@@ -12,7 +12,7 @@ function Engine:new()
   self.slow_factor = 1
   self.slow_handler = nil
   self.flash_frames = 0
-  self.sp = 0
+  self.skill_point = 0
 
   self.scene = Scene(self)
   self.camera = Camera()
@@ -71,8 +71,8 @@ function Engine:attach(scene)
   self.scene = scene
 end
 
-function Engine:changeSPBy(amount)
-  self.sp = math.max(0, self.sp + amount)
+function Engine:changeSkillPointBy(amount)
+  self.skill_point = math.max(0, self.skill_point + amount)
 end
 
 return Engine

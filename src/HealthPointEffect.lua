@@ -1,10 +1,10 @@
 local GameObject = require('src.GameObject')
 local colors = require('src.constants.colors')
 
-local HPEffect = GameObject:extend()
+local HeathPointEffect = GameObject:extend()
 
-function HPEffect:new(x, y)
-  HPEffect.super.new(self, x, y)
+function HeathPointEffect:new(x, y)
+  HeathPointEffect.super.new(self, x, y)
 
   self.width, self.height = 12, 12
   self.color = colors.normal.default
@@ -30,7 +30,7 @@ function HPEffect:new(x, y)
   self.timer:tween(0.35, self, { inner_scale = 1.2, outer_scale = 1.8 }, 'in-out-cubic')
 end
 
-function HPEffect:draw()
+function HeathPointEffect:draw()
   if not self.visible then
     return
   end
@@ -43,4 +43,4 @@ function HPEffect:draw()
   love.graphics.circle('line', self.x, self.y, self.width * self.outer_scale)
 end
 
-return HPEffect
+return HeathPointEffect

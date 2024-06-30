@@ -36,12 +36,14 @@ function Player:new(x, y, engine, area)
   self.acceleration = 100
   self.trail_color = colors.normal.skill_point
 
-  self.maxAmmo = 100
-  self.ammo = self.maxAmmo
-  self.maxHP = 100
-  self.hp = self.maxHP
-  self.maxBoost = 100
-  self.boost = self.maxBoost
+  self.max_ammo = 100
+  self.ammo = self.max_ammo
+
+  self.max_health_point = 100
+  self.health_point = self.max_health_point
+
+  self.max_boost = 100
+  self.boost = self.max_boost
 
   self.boosting = false
   self.can_boost = true
@@ -128,10 +130,10 @@ function Player:update(dt)
       self:changeAmmoBy(5)
     elseif object:is(resources.Boost) then
       self:changeBoostBy(25)
-    elseif object:is(resources.HP) then
-      self:changeHPBy(25)
-    elseif object:is(resources.SP) then
-      self.engine:changeSPBy(1)
+    elseif object:is(resources.HealthPoint) then
+      self:changeHealthPointsBy(25)
+    elseif object:is(resources.SkillPoint) then
+      self.engine:changeSkillPointsBy(1)
     elseif object:is(resources.Attack) then
       self:changeAttackType(object.attack)
     end
@@ -202,21 +204,21 @@ function Player:tick()
 end
 
 function Player:changeAmmoBy(amount)
-  self.ammo = math.max(0, math.min(self.ammo + amount, self.maxAmmo))
+  self.ammo = math.max(0, math.min(self.ammo + amount, self.max_ammo))
 end
 
-function Player:changeHPBy(amount)
-  self.hp = math.max(0, math.min(self.hp + amount, self.maxHP))
+function Player:changeHealthPointsBy(amount)
+  self.health_point = math.max(0, math.min(self.hp + amount, self.max_health_point))
 end
 
 function Player:changeBoostBy(amount)
-  self.boost = math.max(0, math.min(self.boost + amount, self.maxBoost))
+  self.boost = math.max(0, math.min(self.boost + amount, self.max_boost))
 end
 
 function Player:changeAttackType(attack)
   self.attack = attacks[attack](self)
   self.shoot_cooldown = self.attack.cooldown
-  self.ammo = self.maxAmmo
+  self.ammo = self.max_ammo
 end
 
 function Player:attach(ship)
@@ -238,7 +240,7 @@ function Player:hit(damage)
   end
 
   damage = damage or 10
-  self:changeHPBy(-damage)
+  self:changeHealthPointsBy(-damage)
 
   if self.hp <= 0 then
     self:die()

@@ -2,15 +2,15 @@ local utils = require('src.utils')
 local GameObject = require('src.GameObject')
 local ExplodeParticle = require('src.ExplodeParticle')
 local colors = require('src.constants.colors')
-local HPEffect = require('src.HPEffect')
+local HealthPointEffect = require('src.HealthPointEffect')
 local InfoText = require('src.InfoText')
 
-local HP = GameObject:extend()
+local HealthPoint = GameObject:extend()
 
-function HP:new(scene)
+function HealthPoint:new(scene)
   local direction = utils.pickRandom({ -1, 1 })
   local vw, vh = utils.getVirtualWindowDimensions()
-  HP.super.new(self, vw / 2 + direction * (vw / 2 + 48), utils.random(48, vh - 48))
+  HealthPoint.super.new(self, vw / 2 + direction * (vw / 2 + 48), utils.random(48, vh - 48))
 
   self.area = scene.area
   self.width, self.height = 12, 12
@@ -22,13 +22,13 @@ function HP:new(scene)
   self.collider:setCollisionClass('Collectable')
 end
 
-function HP:update(dt)
-  HP.super.update(self, dt)
+function HealthPoint:update(dt)
+  HealthPoint.super.update(self, dt)
 
   self.collider:setLinearVelocity(self.linearVelocity, 0)
 end
 
-function HP:draw()
+function HealthPoint:draw()
   love.graphics.setColor(colors.normal.hp)
   local inner_width, inner_height = self.width, 0.3 * self.height
   love.graphics.rectangle('fill', self.x - inner_width / 2, self.y - inner_height / 2, inner_width, inner_height)
@@ -37,15 +37,15 @@ function HP:draw()
   love.graphics.circle('line', self.x, self.y, self.width)
 end
 
-function HP:die()
-  HP.super.die(self)
-  self.area:insert(HPEffect(self.x, self.y))
+function HealthPoint:die()
+  HealthPoint.super.die(self)
+  self.area:insert(HealthPointEffect(self.x, self.y))
 
   self.area:insert(
     InfoText(
       self.x + utils.random(-self.width, self.width),
       self.y + utils.random(-self.height, self.height),
-      '+HP',
+      '+HEALTH',
       colors.normal.hp
     )
   )
@@ -54,4 +54,4 @@ function HP:die()
   end
 end
 
-return HP
+return HealthPoint

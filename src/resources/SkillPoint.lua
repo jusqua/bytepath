@@ -5,12 +5,12 @@ local colors = require('src.constants.colors')
 local BoostEffect = require('src.BoostEffect')
 local InfoText = require('src.InfoText')
 
-local SP = GameObject:extend()
+local SkillPoint = GameObject:extend()
 
-function SP:new(scene)
+function SkillPoint:new(scene)
   local direction = ({ -1, 1 })[love.math.random(1, 2)]
   local vw, vh = utils.getVirtualWindowDimensions()
-  SP.super.new(self, vw / 2 + direction * (vw / 2 + 48), love.math.random(48, vh - 48))
+  SkillPoint.super.new(self, vw / 2 + direction * (vw / 2 + 48), love.math.random(48, vh - 48))
 
   self.area = scene.area
   self.width, self.height = 12, 12
@@ -24,13 +24,13 @@ function SP:new(scene)
   self.collider:setCollisionClass('Collectable')
 end
 
-function SP:update(dt)
-  SP.super.update(self, dt)
+function SkillPoint:update(dt)
+  SkillPoint.super.update(self, dt)
 
   self.collider:setLinearVelocity(self.linearVelocity, 0)
 end
 
-function SP:draw()
+function SkillPoint:draw()
   love.graphics.setColor(colors.normal.skill_point)
   love.graphics.push()
   utils.rotateAtPosition(self.x, self.y, self.collider:getAngle())
@@ -42,15 +42,15 @@ function SP:draw()
   love.graphics.setColor(colors.normal.default)
 end
 
-function SP:die()
-  SP.super.die(self)
+function SkillPoint:die()
+  SkillPoint.super.die(self)
   self.area:insert(BoostEffect(self.x, self.y, colors.normal.skill_point))
 
   self.area:insert(
     InfoText(
       self.x + love.math.random(-self.width, self.width),
       self.y + love.math.random(-self.height, self.height),
-      '+SP',
+      '+SKILL',
       colors.normal.skill_point
     )
   )
@@ -59,4 +59,4 @@ function SP:die()
   end
 end
 
-return SP
+return SkillPoint
