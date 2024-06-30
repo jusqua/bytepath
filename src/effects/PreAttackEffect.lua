@@ -1,6 +1,6 @@
 local utils = require('src.utils')
 local GameObject = require('src.GameObject')
-local TargetParticle = require('src.TargetParticle')
+local TargetParticle = require('src.particles.TargetParticle')
 
 local PreAttackEffect = GameObject:extend()
 

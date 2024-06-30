@@ -1,5 +1,5 @@
 local Object = require('lib.classic.classic')
-local TrailParticle = require('src.TrailParticle')
+local TrailParticle = require('src.particles.TrailParticle')
 
 local Sloth = Object:extend()
 

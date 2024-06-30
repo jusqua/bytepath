@@ -1,6 +1,6 @@
 local vector = require('lib.hump.vector')
 local GameObject = require('src.GameObject')
-local ExplodeParticle = require('src.ExplodeParticle')
+local ExplodeParticle = require('src.particles.ExplodeParticle')
 local colors = require('src.constants.colors')
 local AmmoEffect = require('src.effects.AmmoEffect')
 local utils = require('src.utils')
