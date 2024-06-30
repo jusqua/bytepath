@@ -103,7 +103,7 @@ end
 local function chanceList(...)
   return {
     chance_list = {},
-    chanch_definitions = { ... },
+    chance_definitions = { ... },
     next = function(self)
       if #self.chance_list == 0 then
         for _, chance_definition in ipairs(self.chance_definitions) do
