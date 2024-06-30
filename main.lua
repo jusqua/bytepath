@@ -27,11 +27,6 @@ end
 
 function love.update(dt)
   engine:update(dt)
-
-  local escape_pressed, _, _ = Input.pressed('escape')
-  if escape_pressed then
-    love.event.quit()
-  end
 end
 
 function love.draw()

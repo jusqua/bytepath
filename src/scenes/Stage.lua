@@ -1,4 +1,5 @@
 local push = require('lib.push.push')
+local Input = require('lib.input.input')
 local GameObject = require('src.GameObject')
 local Area = require('src.Area')
 local Player = require('src.Player')
@@ -27,6 +28,8 @@ function Stage:new(engine)
   local vx, vy = push.toGame(wwidth / 2, wheight / 2)
   self.player = Player(vx, vy, engine, self.area)
   self.director = Director(self)
+  self.game_over = false
+  self.paused = false
 
   self.area:insert(self.player)
 
@@ -39,8 +42,29 @@ end
 function Stage:update(dt)
   Stage.super.update(self, dt)
 
-  self.director:update(dt)
-  self.area:update(dt)
+  if not self.game_over and select(1, Input.pressed('escape')) then
+    self.paused = not self.paused
+  end
+
+  if self.game_over or self.paused then
+    if select(1, Input.pressed('q')) then
+      self.engine:attach(self.engine.scenes.Console(self.engine))
+    elseif select(1, Input.pressed('r')) then
+      self.engine:attach(self.engine.scenes.Stage(self.engine))
+    end
+  end
+
+  if self.paused then
+    return
+  end
+
+  if self.director then
+    self.director:update(dt)
+  end
+
+  if self.area then
+    self.area:update(dt)
+  end
 
   if self.player and not self.player.alive then
     self.player = nil
@@ -189,6 +213,31 @@ function Stage:draw()
   )
 
   love.graphics.setColor(colors.normal.default)
+
+  if self.game_over or self.paused then
+    title = self.game_over and 'GAME OVER' or 'PAUSED'
+    love.graphics.print(
+      title,
+      vw / 2,
+      vh / 2 - self.font:getHeight(),
+      0,
+      1,
+      1,
+      math.floor(self.font:getWidth(title) / 2),
+      math.floor(self.font:getHeight() / 2)
+    )
+    title = 'Press [R] to restart simulation or [Q] to return to console'
+    love.graphics.print(
+      title,
+      vw / 2,
+      vh / 2 + self.font:getHeight(),
+      0,
+      1,
+      1,
+      math.floor(self.font:getWidth(title) / 2),
+      math.floor(self.font:getHeight() / 2)
+    )
+  end
 end
 
 function Stage:destroy()
@@ -196,11 +245,13 @@ function Stage:destroy()
   self.area:destroy()
   self.area = nil
   self.engine = nil
+  self.director = nil
 end
 
 function Stage:finish()
-  self.engine.timer:after(1, function()
-    self.engine:attach(Stage(self.engine))
+  self.engine.timer:after(0.5, function()
+    self.game_over = true
+    self.paused = false
   end)
 end
 

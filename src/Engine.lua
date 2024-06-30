@@ -3,6 +3,7 @@ local GameObject = require('src.GameObject')
 local utils = require('src.utils')
 local colors = require('src.constants.colors')
 local Console = require('src.scenes.Console')
+local Stage = require('src.scenes.Stage')
 
 local Engine = GameObject:extend()
 
@@ -14,8 +15,13 @@ function Engine:new()
   self.flash_frames = 0
   self.skill_point = 0
 
+  self.scenes = {
+    Console = Console,
+    Stage = Stage,
+  }
+
   self.camera = Camera()
-  self:attach(Console(self))
+  self:attach(self.scenes.Console(self))
 end
 
 function Engine:update(dt)
