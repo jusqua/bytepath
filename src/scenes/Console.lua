@@ -75,6 +75,11 @@ function Console:update(dt)
         self:addInputLine(base_delay + 0.1)
       elseif modules[input_text] then
         table.insert(self.modules, modules[input_text].module(self))
+      else
+        self:addLine(0.05)
+        self:addLine(0.1, { 'Command "', colors.normal.ammo, input_text, colors.normal.default, '" not found' })
+        self:addLine(0.15)
+        self:addInputLine(0.2)
       end
     end
     if select(1, Input.down('backspace', 0.02, 0.1)) then
