@@ -43,6 +43,7 @@ function Projectile:update(dt)
     local collisionData = self.collider:getEnterCollisionData('Enemy')
     local object = collisionData.collider:getObject()
     object:hit(self.damage)
+    self:die()
   end
 
   local ww, wh = push.toGame(love.window.getMode())
