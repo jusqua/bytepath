@@ -25,8 +25,7 @@ function Console:new(engine)
   local vw, vh = utils.getVirtualWindowDimensions()
   self.engine.camera:lookAt(vw / 2, vh / 2)
 
-  self:addLine(1, { 'test', colors.normal.boost, ' test' })
-  self:addInputLine(2)
+  self:addInputLine(1)
 
   self.timer:every(0.5, function()
     self.cursor_visible = not self.cursor_visible
@@ -36,8 +35,13 @@ end
 function Console:update(dt)
   Console.super.update(self, dt)
 
-  for _, module in ipairs(self.modules) do
-    module:update(dt)
+  for i = #self.modules, 1, -1 do
+    local module = self.modules[i]
+    if module.alive then
+      module:update(dt)
+    else
+      table.remove(self.modules, i)
+    end
   end
 
   if self.inputting then
@@ -48,7 +52,9 @@ function Console:update(dt)
         input_text = input_text .. character
       end
       self.input_text = {}
-      modules[input_text](self)
+      if modules[input_text] then
+        table.insert(self.modules, modules[input_text](self))
+      end
     end
     if select(1, Input.down('backspace', 0.02, 0.2)) then
       table.remove(self.input_text, #self.input_text)
@@ -68,7 +74,7 @@ function Console:draw()
 
   if self.inputting and self.cursor_visible then
     local r, g, b = unpack(colors.normal.default)
-    love.graphics.setColor(r, g, b, 0.69)
+    love.graphics.setColor(r, g, b, 0.90)
     local input_text = ''
     for _, character in ipairs(self.input_text) do
       input_text = input_text .. character
