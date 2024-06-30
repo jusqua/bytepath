@@ -53,7 +53,7 @@ function ResolutionModule:update(dt)
   if select(1, Input.pressed('return')) then
     self.active = false
     utils.resize(self.selection_index)
-    self.console:addLine(self.base_delay, '')
+    self.console:addLine(self.base_delay)
     self.console:addInputLine(self.base_delay * 2)
     self:die()
   end
