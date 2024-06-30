@@ -58,7 +58,7 @@ function Console:update(dt)
         table.insert(self.modules, modules[input_text](self))
       end
     end
-    if select(1, Input.down('backspace', 0.02, 0.2)) then
+    if select(1, Input.down('backspace', 0.02, 0.1)) then
       table.remove(self.input_text, #self.input_text)
       self:updateText()
     end
