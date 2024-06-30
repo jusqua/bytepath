@@ -88,7 +88,8 @@ function Console:draw()
 end
 
 function Console:addLine(delay, text)
-  text = text or ''
+  delay = delay or 0
+  text = text or { '' }
   self.timer:after(delay, function()
     table.insert(self.lines, { x = 8, y = self.line_y, text = love.graphics.newText(self.font, text) })
     self.line_y = self.line_y + 12
@@ -97,6 +98,7 @@ function Console:addLine(delay, text)
 end
 
 function Console:addInputLine(delay)
+  delay = delay or 0
   self.timer:after(delay, function()
     table.insert(self.lines, { x = 8, y = self.line_y, text = love.graphics.newText(self.font, self.base_input_text) })
     self.line_y = self.line_y + 12

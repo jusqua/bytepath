@@ -19,6 +19,7 @@ function ResolutionModule:new(console)
   self.selection_index = 1
   self.selection_widths = {}
 
+  self.console:addLine()
   self.base_delay = 0.02
   self.console:addLine(self.base_delay, 'Available resolutions: ')
   for i, resolution in ipairs(self.resolutions) do
@@ -54,7 +55,15 @@ function ResolutionModule:update(dt)
     self.active = false
     utils.resize(self.selection_index)
     self.console:addLine(self.base_delay)
-    self.console:addInputLine(self.base_delay * 2)
+    self.console:addLine(0, {
+      'Resolution ',
+      colors.normal.boost,
+      self.resolutions[self.selection_index],
+      colors.normal.default,
+      ' applied successfully',
+    })
+    self.console:addLine(self.base_delay)
+    self.console:addInputLine(0.5)
     self:die()
   end
 end
