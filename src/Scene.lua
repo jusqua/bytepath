@@ -11,6 +11,7 @@ local SP = require('src.SP')
 local Attack = require('src.Attack')
 local Rock = require('src.enemies.Rock')
 local Shooter = require('src.enemies.Shooter')
+local Director = require('src.Director')
 
 local Scene = GameObject:extend()
 
@@ -29,6 +30,7 @@ function Scene:new(engine)
   local wwidth, wheight, _ = love.window.getMode()
   local vx, vy = push.toGame(wwidth / 2, wheight / 2)
   self.player = Player(vx, vy, engine, self.area)
+  self.director = Director(self)
 
   self.area:insert(self.player)
 end
