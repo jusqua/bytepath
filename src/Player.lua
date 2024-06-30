@@ -50,9 +50,8 @@ function Player:new(x, y, engine, area)
   self.boost_timer = 0
   self.boost_cooldown = 2
 
-  self.timer:every(5, function()
-    self:tick()
-  end)
+  self.cycle_timer = 0
+  self.cycle_cooldown = 5
 
   self.timer:every(0.01, function()
     local trails = self.ship:trails()
@@ -71,6 +70,12 @@ function Player:update(dt)
   end
   if select(1, Input.down('right')) then
     self.angle = self.angle + self.angularVelocity * dt
+  end
+
+  self.cycle_timer = self.cycle_timer + dt
+  if self.cycle_timer >= self.cycle_cooldown then
+    self.cycle_timer = self.cycle_timer - self.cycle_cooldown
+    self:tick()
   end
 
   self.shoot_timer = self.shoot_timer + dt

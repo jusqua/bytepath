@@ -33,6 +33,7 @@ function Stage:new(engine)
   self.player_max_health_points = self.player.max_health_point
   self.player_max_ammo = self.player.max_ammo
   self.player_max_boost = self.player.max_boost
+  self.player_cycle_cooldown = self.player.cycle_cooldown
 end
 
 function Stage:update(dt)
@@ -110,7 +111,7 @@ function Stage:draw()
 
   -- cicle gauge bar
   r, g, b = 1, 1, 1
-  cur, max = self.director.round_timer, self.director.round_duration
+  cur, max = self.player and self.player.cycle_timer or 0, self.player_cycle_cooldown
   title = 'CYCLE'
   love.graphics.setColor(r, g, b)
   love.graphics.rectangle('fill', vw / 2 + 4, vh - 16, 48 * (cur / max), 4)
