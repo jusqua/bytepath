@@ -25,6 +25,8 @@ function Console:new(engine)
   local vw, vh = utils.getVirtualWindowDimensions()
   self.engine.camera:lookAt(vw / 2, vh / 2)
 
+  self:addLine(0.5, { "Welcome to jusqua's ", colors.normal.boost, 'BYTEPATH', colors.normal.default, ' v0.1' })
+  self:addLine(1, { 'Type ', colors.normal.hp, 'help', colors.normal.default, ' to see available commands' })
   self:addInputLine(1)
 
   self.timer:every(0.5, function()
@@ -54,8 +56,25 @@ function Console:update(dt)
       self.input_text = {}
       if input_text == '' then
         self:addInputLine(0.1)
+      elseif input_text == 'help' then
+        self:addLine()
+        local base_delay = 0.02
+        self:addLine(base_delay, 'Available commands: ')
+        for k, module in pairs(modules) do
+          base_delay = base_delay + 0.02
+          self:addLine(base_delay, {
+            '    ',
+            colors.normal.hp,
+            k,
+            colors.normal.default,
+            string.rep(' ', 16 - string.len(k)),
+            module.description,
+          })
+        end
+        self:addLine(base_delay + 0.02)
+        self:addInputLine(base_delay + 0.1)
       elseif modules[input_text] then
-        table.insert(self.modules, modules[input_text](self))
+        table.insert(self.modules, modules[input_text].module(self))
       end
     end
     if select(1, Input.down('backspace', 0.02, 0.1)) then
