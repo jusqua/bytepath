@@ -70,8 +70,17 @@ function Director:setEnemySpawns()
   local enemy_list = {}
   while points > 0 do
     local enemy = self.enemy_spawn_chances[self.round]:next()
-    points = points - self.enemies_to_points[enemy]
-    table.insert(enemy_list, enemy)
+    local _points = points - self.enemies_to_points[enemy]
+    if _points < 0 then
+      enemy = 'Rock'
+      while points > 0 do
+        points = points - self.enemies_to_points[enemy]
+        table.insert(enemy_list, enemy)
+      end
+    else
+      points = _points
+      table.insert(enemy_list, enemy)
+    end
   end
 
   local enemy_spawn_times = {}
