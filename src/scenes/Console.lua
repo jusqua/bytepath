@@ -27,7 +27,7 @@ function Console:new(engine)
 
   self:addLine(0.5, { "Welcome to jusqua's ", colors.normal.boost, 'BYTEPATH', colors.normal.default, ' v0.1' })
   self:addLine(1, { 'Type ', colors.normal.hp, 'help', colors.normal.default, ' to see available commands' })
-  self:addInputLine(1)
+  self:addInputLine(1.5)
 
   self.timer:every(0.5, function()
     self.cursor_visible = not self.cursor_visible
