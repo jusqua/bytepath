@@ -41,11 +41,16 @@ function Stage:draw()
 end
 
 function Stage:destroy()
+  Stage.super.destroy(self)
   self.area:destroy()
   self.area = nil
-  self.player:destroy()
-  self.player = nil
   self.engine = nil
+end
+
+function Stage:finish()
+  self.engine.timer:after(1, function()
+    self.engine:attach(Stage(self.engine))
+  end)
 end
 
 return Stage

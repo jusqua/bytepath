@@ -197,6 +197,7 @@ function Player:die()
   for _ = 1, love.math.random(8, 12) do
     self.area:insert(ExplodeParticle(self.x, self.y))
   end
+  self.engine.scene:finish()
 end
 
 function Player:tick()
