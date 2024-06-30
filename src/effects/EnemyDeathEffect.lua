@@ -9,6 +9,7 @@ function EnemyDeathEffect:new(x, y, width, height)
   self.width = width
   self.height = height or width
 
+  self.depth = 75
   self.first = true
   self.timer:after(0.1, function()
     self.first = false
