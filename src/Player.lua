@@ -7,12 +7,8 @@ local utils = require('src.utils')
 local TickEffect = require('src.TickEffect')
 local colors = require('src.constants.colors')
 local ships = require('src.ships')
-local Ammo = require('src.Ammo')
-local Boost = require('src.Boost')
-local HP = require('src.HP')
-local SP = require('src.SP')
 local attacks = require('src.attacks')
-local Attack = require('src.Attack')
+local resources = require('src.resources')
 
 local Player = GameObject:extend()
 
@@ -128,15 +124,15 @@ function Player:update(dt)
   if self.collider:enter('Collectable') then
     local collisionData = self.collider:getEnterCollisionData('Collectable')
     local object = collisionData.collider:getObject()
-    if object:is(Ammo) then
+    if object:is(resources.Ammo) then
       self:changeAmmoBy(5)
-    elseif object:is(Boost) then
+    elseif object:is(resources.Boost) then
       self:changeBoostBy(25)
-    elseif object:is(HP) then
+    elseif object:is(resources.HP) then
       self:changeHPBy(25)
-    elseif object:is(SP) then
+    elseif object:is(resources.SP) then
       self.engine:changeSPBy(1)
-    elseif object:is(Attack) then
+    elseif object:is(resources.Attack) then
       self:changeAttackType(object.attack)
     end
     object:die()

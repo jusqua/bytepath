@@ -2,15 +2,6 @@ local push = require('lib.push.push')
 local GameObject = require('src.GameObject')
 local Area = require('src.Area')
 local Player = require('src.Player')
-local Input = require('lib.input.input')
-local Ammo = require('src.Ammo')
-local utils = require('src.utils')
-local Boost = require('src.Boost')
-local HP = require('src.HP')
-local SP = require('src.SP')
-local Attack = require('src.Attack')
-local Rock = require('src.enemies.Rock')
-local Shooter = require('src.enemies.Shooter')
 local Director = require('src.Director')
 
 local Scene = GameObject:extend()
@@ -39,29 +30,6 @@ function Scene:update(dt)
   Scene.super.update(self, dt)
 
   self.area:update(dt)
-
-  local virtualWidth, virtualHeight = utils.getVirtualWindowDimensions()
-  if select(1, Input.pressed('p')) then
-    self.area:insert(Ammo(utils.random(virtualWidth), utils.random(virtualHeight), self))
-  end
-  if select(1, Input.pressed('o')) then
-    self.area:insert(Boost(self))
-  end
-  if select(1, Input.pressed('i')) then
-    self.area:insert(HP(self))
-  end
-  if select(1, Input.pressed('u')) then
-    self.area:insert(SP(self))
-  end
-  if select(1, Input.pressed('y')) then
-    self.area:insert(Attack(self))
-  end
-  if select(1, Input.pressed('0')) then
-    self.area:insert(Rock(self))
-  end
-  if select(1, Input.pressed('9')) then
-    self.area:insert(Shooter(self))
-  end
 
   if self.player and not self.player.alive then
     self.player = nil
