@@ -6,7 +6,7 @@ local utils = require('src.utils')
 local ResolutionModule = GameObject:extend()
 
 function ResolutionModule:new(console)
-  ResolutionModule.super.new(self, 0, console.line_y)
+  ResolutionModule.super.new(self)
 
   self.console = console
 
@@ -19,6 +19,7 @@ function ResolutionModule:new(console)
   self.selection_index = 1
   self.selection_widths = {}
 
+  self.console:addLine()
   self.base_delay = 0.02
   self.console:addLine(self.base_delay, 'Available resolutions: ')
   for i, resolution in ipairs(self.resolutions) do
@@ -26,7 +27,7 @@ function ResolutionModule:new(console)
     self.selection_widths[i] = self.console.font:getWidth(resolution)
   end
 
-  self.console.timer:after(self.base_delay + self.selection_index * self.base_delay, function()
+  self.console.timer:after(self.base_delay + #self.resolutions * self.base_delay, function()
     self.active = true
   end)
 end
@@ -53,8 +54,16 @@ function ResolutionModule:update(dt)
   if select(1, Input.pressed('return')) then
     self.active = false
     utils.resize(self.selection_index)
-    self.console:addLine(self.base_delay, '')
-    self.console:addInputLine(self.base_delay * 2)
+    self.console:addLine(self.base_delay)
+    self.console:addLine(0, {
+      'Resolution ',
+      colors.normal.boost,
+      self.resolutions[self.selection_index],
+      colors.normal.default,
+      ' applied successfully',
+    })
+    self.console:addLine(self.base_delay)
+    self.console:addInputLine(0.5)
     self:die()
   end
 end
@@ -71,7 +80,7 @@ function ResolutionModule:draw()
   love.graphics.rectangle(
     'fill',
     8 + x_offset - 2,
-    self.y + self.selection_index * 12,
+    self.console.lines[#self.console.lines + self.selection_index - #self.resolutions].y,
     width + 4,
     self.console.font:getHeight()
   )

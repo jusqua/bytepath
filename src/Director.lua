@@ -40,7 +40,7 @@ function Director:new(scene)
   end
   self:setEnemySpawns()
 
-  self.resources_spawn_chances = utils.chanceList({ 'Boost', 28 }, { 'HealthPoint', 14 }, { 'SkillPoint', 58 })
+  self.resources_spawn_chances = utils.chanceList({ 'Boost', 28 }, { 'HealthPoint', 14 })
   self.resources_spawn_time = 16
   self.timer:every(self.resources_spawn_time, function()
     local resource = self.resources_spawn_chances:next()

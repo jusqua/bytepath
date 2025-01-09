@@ -14,6 +14,7 @@ function love.load()
   love.graphics.setDefaultFilter('nearest', 'nearest')
   love.graphics.setLineStyle('rough')
   love.graphics.setColor(colors.normal.default)
+  love.mouse.setVisible(false)
 
   push.setupScreen(virtualWidth, virtualHeight, {
     upscale = 'pixel-perfect',
@@ -27,11 +28,6 @@ end
 
 function love.update(dt)
   engine:update(dt)
-
-  local escape_pressed, _, _ = Input.pressed('escape')
-  if escape_pressed then
-    love.event.quit()
-  end
 end
 
 function love.draw()

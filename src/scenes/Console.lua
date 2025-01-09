@@ -25,7 +25,9 @@ function Console:new(engine)
   local vw, vh = utils.getVirtualWindowDimensions()
   self.engine.camera:lookAt(vw / 2, vh / 2)
 
-  self:addInputLine(1)
+  self:addLine(0.5, { "Welcome to jusqua's ", colors.normal.boost, 'BYTEPATH', colors.normal.default, ' v0.1' })
+  self:addLine(1, { 'Type ', colors.normal.hp, 'help', colors.normal.default, ' to see available commands' })
+  self:addInputLine(1.5)
 
   self.timer:every(0.5, function()
     self.cursor_visible = not self.cursor_visible
@@ -52,11 +54,35 @@ function Console:update(dt)
         input_text = input_text .. character
       end
       self.input_text = {}
-      if modules[input_text] then
-        table.insert(self.modules, modules[input_text](self))
+      if input_text == '' then
+        self:addInputLine(0.1)
+      elseif input_text == 'help' then
+        self:addLine()
+        local base_delay = 0.02
+        self:addLine(base_delay, 'Available commands: ')
+        for k, module in pairs(modules) do
+          base_delay = base_delay + 0.02
+          self:addLine(base_delay, {
+            '    ',
+            colors.normal.hp,
+            k,
+            colors.normal.default,
+            string.rep(' ', 16 - string.len(k)),
+            module.description,
+          })
+        end
+        self:addLine(base_delay + 0.02)
+        self:addInputLine(base_delay + 0.1)
+      elseif modules[input_text] then
+        table.insert(self.modules, modules[input_text].module(self))
+      else
+        self:addLine(0.05)
+        self:addLine(0.1, { 'Command "', colors.normal.ammo, input_text, colors.normal.default, '" not found' })
+        self:addLine(0.15)
+        self:addInputLine(0.2)
       end
     end
-    if select(1, Input.down('backspace', 0.02, 0.2)) then
+    if select(1, Input.down('backspace', 0.02, 0.1)) then
       table.remove(self.input_text, #self.input_text)
       self:updateText()
     end
@@ -86,17 +112,22 @@ function Console:draw()
 end
 
 function Console:addLine(delay, text)
+  delay = delay or 0
+  text = text or { '' }
   self.timer:after(delay, function()
     table.insert(self.lines, { x = 8, y = self.line_y, text = love.graphics.newText(self.font, text) })
     self.line_y = self.line_y + 12
+    self:scroll()
   end)
 end
 
 function Console:addInputLine(delay)
+  delay = delay or 0
   self.timer:after(delay, function()
     table.insert(self.lines, { x = 8, y = self.line_y, text = love.graphics.newText(self.font, self.base_input_text) })
     self.line_y = self.line_y + 12
     self.inputting = true
+    self:scroll()
   end)
 end
 
@@ -104,6 +135,19 @@ function Console:textinput(t)
   if self.inputting then
     table.insert(self.input_text, t)
     self:updateText()
+  end
+end
+
+function Console:scroll()
+  local _, vh = utils.getVirtualWindowDimensions()
+  local font_height = self.font:getHeight()
+  if self.line_y + font_height > vh then
+    local offset = self.line_y + font_height - vh
+    self.line_y = self.line_y - offset
+    for i = #self.lines, 1, -1 do
+      local line = self.lines[i]
+      self.timer:tween(0.05, line, { y = line.y - offset }, 'linear')
+    end
   end
 end
 
